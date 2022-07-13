@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .facebook-icon {
+    @apply text-2xl text-blue-600 mr-3 hover:bg-stone-200;
+  }
+}

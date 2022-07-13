@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .login {
+    @apply px-6 text-gray-800;
+  }
+  .login-main {
+    @apply flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full;
+  }
+  .login-main-bg {
+    @apply grow-0 shrink md:shrink-0 basis-auto xl:w-6/12 lg:w-6/12 md:w-9/12 mb-12 md:mb-0;
+  }
+  .bg {
+    @apply w-full;
+  }
+  .login-main-form {
+    @apply xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0;
+  }
+  .login-social {
+    @apply flex flex-row items-center justify-center lg:justify-start;
+  }
+  .login-social-text {
+    @apply text-lg mb-0 mr-4 font-bold;
+  }
+  .separate {
+    @apply flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5;
+  }
+  .separate-text {
+    @apply text-center font-semibold mx-4 mb-0;
+  }
+  .login-form {
+    @apply mb-4;
+  }
+  .form-email {
+    @apply block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none;
+  }
+  .form-password {
+    @apply block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none;
+  }
+  .login-action {
+    @apply flex justify-between items-center mb-6;
+  }
+  .form-checkbox {
+    @apply appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer;
+  }
+  .form-checkbox-text {
+    @apply inline-block text-gray-800;
+  }
+  .action-login {
+    @apply text-center lg:text-left;
+  }
+  .btn-login {
+    @apply px-7 py-3 bg-black text-white font-medium text-sm rounded shadow-md hover:bg-red-500;
+  }
+  .login-text {
+    @apply text-sm font-semibold mt-2 pt-1 mb-0;
+  }
+  .login-register {
+    @apply text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out;
+  }
+}

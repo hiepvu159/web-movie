@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .dropdown {
+    @apply w-1/4 h-10 text-base;
+  }
+}

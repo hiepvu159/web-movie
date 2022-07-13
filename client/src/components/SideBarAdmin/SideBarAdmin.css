@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .sidebar-admin {
+    @apply flex flex-col justify-between fixed h-screen bg-stone-900;
+  }
+  .sidebar-admin-banner {
+    @apply flex justify-center;
+  }
+  .sidebar-admin-category {
+    @apply mt-5;
+  }
+  .admin-title {
+    @apply font-logo text-white tracking-widest pl-1 my-6 font-black text-2xl;
+  }
+  .admin-category {
+    @apply flex justify-start py-7 text-gray-400 hover:bg-gray-600 cursor-pointer;
+  }
+  .admin-category-icon {
+    @apply h-5 w-5 mx-2 text-gray-400;
+  }
+  .admin-logout {
+    @apply text-gray-500 w-5 h-full ml-3 hover:text-white;
+  }
+}

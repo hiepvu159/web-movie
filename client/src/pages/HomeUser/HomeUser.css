@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .homeuser-movies {
+    @apply pl-4 pt-5 font-logo text-4xl;
+  }
+  .container-list {
+    @apply flex flex-wrap justify-start w-full overflow-x-auto;
+  }
+  .container-list-item {
+    @apply col-span-2;
+  }
+}

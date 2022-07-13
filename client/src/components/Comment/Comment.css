@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .comment {
+    @apply flex py-2;
+  }
+
+  .user-name {
+    @apply font-semibold;
+  }
+}

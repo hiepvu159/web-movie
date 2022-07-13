@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .search {
+    @apply py-4;
+  }
+  .search-form {
+    @apply relative text-center;
+  }
+  .search-box {
+    @apply p-4 mx-4 w-5/6 text-sm text-black rounded border border-gray-300 outline-0;
+  }
+  .btn-search {
+    @apply h-full text-white absolute bg-slate-800 right-24 bottom-0 font-bold mt-2 py-2 px-4 rounded hover:bg-slate-700;
+  }
+}

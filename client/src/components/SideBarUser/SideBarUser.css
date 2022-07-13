@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .sidebar {
+    @apply py-3 pr-10;
+  }
+  .sidebar-item {
+    @apply w-full;
+  }
+  .sidebar-title {
+    @apply font-logo text-2xl w-full pl-4;
+  }
+  .sidebar-item {
+    @apply flex p-2;
+  }
+  .sidebar-item-image {
+    @apply object-contain h-20 px-2;
+  }
+  .sidebar-item-des {
+    @apply flex flex-col justify-between;
+  }
+  .sidebar-item-rating {
+    @apply order-last;
+  }
+}
