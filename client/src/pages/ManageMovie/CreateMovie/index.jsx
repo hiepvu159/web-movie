@@ -5,19 +5,30 @@ import { Link, useNavigate } from "react-router-dom";
 import storage from "../../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { addMovies } from "../../../services/movie";
-import { options } from "../../../gener";
+import { option } from "../../../gener";
 import "./CreateMovie.css";
+import Status from "../../../components/Status";
 
 export default function CreateMovie() {
   const token = useSelector((state) => state.auth.currentUser.accessToken);
   const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
   const [categorySelected, setCategorySelected] = useState([]);
-  const [thumb, setThumb] = useState("");
-  const [poster, setPoster] = useState("");
-  const [trailer, setTrailer] = useState("");
-  const [link, setLink] = useState("");
+  const [thumb, setThumb] = useState(null);
+  const [poster, setPoster] = useState(null);
+  const [trailer, setTrailer] = useState(null);
+  const [link, setLink] = useState(null);
+  const [load, setLoad] = useState(null);
+  const [check, setCheck] = useState(0);
+  const [status, setStatus] = useState({
+    isLoading: false,
+  });
 
+  const handleStatus = (isLoading) => {
+    setStatus({
+      isLoading,
+    });
+  };
   const handleChange = (e) => {
     const value = e.target.value;
     setMovie({
@@ -33,6 +44,7 @@ export default function CreateMovie() {
 
   const handleUpload = (e) => {
     e.preventDefault();
+    handleStatus(true);
     setMovie({ ...movie, category: categorySelected });
     uploaded([
       { file: poster, label: "poster_url" },
@@ -49,9 +61,10 @@ export default function CreateMovie() {
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(progress);
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setLoad(progress);
         },
         (error) => {
           console.log(error);
@@ -61,12 +74,13 @@ export default function CreateMovie() {
             setMovie((prev) => {
               return { ...prev, [item.label]: url };
             });
+            setCheck((prev) => prev + 1);
           });
         }
       );
     });
   };
-  console.log(categorySelected);
+
   return (
     <div className="w-full pr-3">
       <div className="font-bold text-3xl pt-5 pl-1">Tạo Phim Mới</div>
@@ -140,7 +154,7 @@ export default function CreateMovie() {
               <label>Thể loại</label>
               <Select
                 name="category"
-                options={options}
+                options={option}
                 isMulti
                 isClearable
                 getOptionLabel={(option) => option.label}
@@ -177,15 +191,29 @@ export default function CreateMovie() {
               <button className="btn-create">Quay về</button>
             </Link>
             <div>
-              <button className="btn-upload" onClick={handleUpload}>
-                Upload file
-              </button>
+              {!poster && !trailer && !thumb && !link ? (
+                <button className="btn-disabled" disabled>
+                  Upload file
+                </button>
+              ) : (
+                <button className="btn-upload" onClick={handleUpload}>
+                  Upload file
+                </button>
+              )}
               <button className="btn-create" onClick={handleSubmit}>
                 Cập nhật
               </button>
             </div>
           </div>
         </form>
+        {status.isLoading && (
+          <Status
+            load={load}
+            check={check}
+            checked={4}
+            onStatus={() => setStatus(false)}
+          />
+        )}
       </div>
     </div>
   );

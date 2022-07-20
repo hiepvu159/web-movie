@@ -7,9 +7,9 @@
     @apply flex py-8 px-4 mb-10;
   }
   .filter {
-    @apply w-1/5 text-base pl-5;
+    @apply w-1/5 text-base;
   }
   .movie-list {
-    @apply w-4/5 flex flex-wrap justify-start ml-10;
+    @apply w-4/5 grid grid-cols-5 gap-5;
   }
 }

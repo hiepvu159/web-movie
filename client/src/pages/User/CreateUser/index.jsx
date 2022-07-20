@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import storage from "../../../firebase";
 import { addNewUser } from "../../../services/user";
+import Status from "../../../components/Status";
 
 export default function CreateUser() {
   const dispatch = useDispatch();
@@ -11,20 +12,29 @@ export default function CreateUser() {
   const [errorMessage, setErrorMessage] = useState("");
   const [avatar, setAvatar] = useState("");
   const [user, setUser] = useState({});
+  const [load, setLoad] = useState(null);
+  const [check, setCheck] = useState(0);
+  const [status, setStatus] = useState({
+    isLoading: false,
+  });
 
   const handleChange = (e) => {
     const value = e.target.value;
     setUser({ ...user, [e.target.name]: value });
   };
-
+  const handleStatus = (isLoading) => {
+    setStatus({
+      isLoading,
+    });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     await addNewUser(user, dispatch, navigate, setErrorMessage);
   };
-  console.log(errorMessage);
 
   const handleUpload = (e) => {
     e.preventDefault();
+    handleStatus(true);
     uploaded([{ file: avatar, label: "avatar" }]);
   };
 
@@ -35,9 +45,11 @@ export default function CreateUser() {
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
           console.log("Upload is " + progress + "% done");
+          setLoad(progress);
         },
         (error) => {
           console.log(error);
@@ -48,6 +60,7 @@ export default function CreateUser() {
             setUser((prev) => {
               return { ...prev, [item.label]: url };
             });
+            setCheck((prev) => prev + 1);
           });
         }
       );
@@ -109,15 +122,29 @@ export default function CreateUser() {
               <button className="btn-create">Quay về</button>
             </Link>
             <div>
-              <button className="btn-upload" onClick={handleUpload}>
-                Upload ảnh
-              </button>
+              {!avatar ? (
+                <button className="btn-disabled" disabled>
+                  Upload ảnh
+                </button>
+              ) : (
+                <button className="btn-upload" onClick={handleUpload}>
+                  Upload ảnh
+                </button>
+              )}
               <button className="btn-create" onClick={handleSubmit}>
-                Cập nhật
+                Tạo tài khoản
               </button>
             </div>
           </div>
         </form>
+        {status.isLoading && (
+          <Status
+            load={load}
+            check={check}
+            checked={1}
+            onStatus={() => setStatus(false)}
+          />
+        )}
       </div>
     </div>
   );

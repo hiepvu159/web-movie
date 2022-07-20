@@ -16,15 +16,13 @@ function AllMovie() {
   return (
     <div className="movie-main">
       <div className="filter">
-        <div className="mb-5">
-          <label>Danh mục</label>
-          <Select
-            defaultValue={options[0]}
-            options={options}
-            className="w-full border border-slate-600 rounded"
-            onChange={(e) => setCategorySelected(e.value)}
-          />
-        </div>
+        <label>Danh mục</label>
+        <Select
+          defaultValue={options[0]}
+          options={options}
+          className="w-full border border-slate-600 rounded"
+          onChange={(e) => setCategorySelected(e.value)}
+        />
       </div>
       <div className="movie-list">
         {categorySelected != "Tất Cả"
