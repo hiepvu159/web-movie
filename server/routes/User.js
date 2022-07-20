@@ -7,6 +7,8 @@ const router = require("express").Router();
 router.get("/", verify, userController.getAllUser);
 //Get A User
 router.get("/find/:id", userController.getUser);
+//Add new user
+router.post("/new", verify, userController.createUser);
 //Update User
 router.put("/:id", verify, userController.updateUser);
 //Delete User

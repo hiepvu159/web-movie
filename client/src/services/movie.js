@@ -1,7 +1,5 @@
 import axios from "axios";
 
-const token = localStorage.getItem("token");
-
 export const getMovies = async (setMovies) => {
   await axios.get(`/movies`).then((res) => {
     setMovies(res.data);
@@ -12,7 +10,7 @@ export const getMovieById = async (id, setMovie) => {
   await axios.get(`/movies/find/${id}`).then((res) => setMovie(res.data));
 };
 
-export const addMovies = async (movie, navigate) => {
+export const addMovies = async (movie, token, navigate) => {
   await axios.post(`/movies`, movie, {
     headers: {
       token: `Bearer ${token}`,
@@ -21,7 +19,7 @@ export const addMovies = async (movie, navigate) => {
   navigate("/admin/movie");
 };
 
-export const updateMovie = async (movie, id, navigate) => {
+export const updateMovie = async (movie, token, id, navigate) => {
   await axios.put(`/movies/${id}`, movie, {
     headers: {
       token: `Bearer ${token}`,
@@ -30,7 +28,7 @@ export const updateMovie = async (movie, id, navigate) => {
   navigate("/admin/movie");
 };
 
-export const deleteMovie = async (id) => {
+export const deleteMovie = async (id, token) => {
   await axios.delete(`/movies/${id}`, {
     headers: {
       token: `Bearer ${token}`,

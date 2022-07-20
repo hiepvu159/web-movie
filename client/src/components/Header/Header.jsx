@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { IoLogOutOutline } from "react-icons/io5";
@@ -10,7 +10,7 @@ function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const currentUser = useSelector((state) => state.auth.currentUser);
+  const user = useSelector((state) => state.auth.currentUser);
 
   const handleLogOut = () => {
     logoutUser(dispatch, navigate);
@@ -34,9 +34,9 @@ function Header() {
           </Link>
         </div>
       </div>
-      {currentUser ? (
+      {user ? (
         <div className="flex">
-          <div className="header-login">{currentUser.username}</div>
+          <div className="header-login">{user.name}</div>
           <Link to="/" onClick={handleLogOut}>
             <IoLogOutOutline className="my-0 mx-auto mt-[3.3rem] ml-2 text-white text-2xl" />
           </Link>

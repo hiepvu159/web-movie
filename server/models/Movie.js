@@ -26,10 +26,6 @@ const movieSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    status: {
-      type: String,
-      required: true,
-    },
     year: {
       type: Number,
       required: true,

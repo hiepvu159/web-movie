@@ -10,7 +10,7 @@
     @apply flex absolute inset-y-1/4 w-full h-[35rem] py-16 px-10;
   }
   .content-poster {
-    @apply h-[27rem] object-cover rounded-lg;
+    @apply h-[27rem] w-72 object-cover rounded-lg;
   }
   .content-info {
     @apply relative w-full px-4;

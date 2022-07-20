@@ -4,11 +4,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
-import { registerNewUser } from "../../redux/registerSlice";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../services/auth";
 
 function Register(props) {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const [errorMessage, setErrorMessage] = useState("");
   const schema = yup.object().shape({
     username: yup
       .string()
@@ -25,24 +27,27 @@ function Register(props) {
       .required("Vui lòng nhập mật khẩu")
       .max(20, "Mật khẩu tối đa 20 ký tự")
       .min(6, "Mật khẩu tối thiểu 6 kí tự"),
+    confirmPassword: yup
+      .string()
+      .required("Vui lòng nhập mật khẩu")
+      .max(20, "Mật khẩu tối đa 20 ký tự")
+      .min(6, "Mật khẩu tối thiểu 6 kí tự")
+      .oneOf([yup.ref("password")], "Xác nhận mật khẩu không chính xác"),
   });
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
   const onRegisterSubmit = async (e) => {
-    const newUser = {
+    const user = {
       name: e.name,
       username: e.username,
       password: e.password,
     };
-
-    // await registerNewUser(newUser);
-    // navigate("/login");
+    await registerUser(user, dispatch, navigate, setErrorMessage);
   };
   return (
     <div className="login">
@@ -74,6 +79,7 @@ function Register(props) {
               {errors.username && (
                 <p className="error">{errors.username?.message}</p>
               )}
+              <div className="text-red-600">{errorMessage}</div>
             </div>
 
             <div className="login-form">
@@ -86,6 +92,18 @@ function Register(props) {
               />
               {errors.password && (
                 <p className="error">{errors.password?.message}</p>
+              )}
+            </div>
+            <div className="login-form">
+              <input
+                type="password"
+                className="form-password"
+                placeholder="Xác nhận mật khẩu..."
+                autoComplete="off"
+                {...register("confirmPassword")}
+              />
+              {errors.confirmPassword && (
+                <p className="error">{errors.confirmPassword?.message}</p>
               )}
             </div>
             <div className="flex justify-between">

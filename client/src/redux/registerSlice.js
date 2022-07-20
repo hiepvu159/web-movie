@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { registerUser } from "../services/auth";
+import axios from "axios";
 
 export const registerNewUser = createAsyncThunk(
   "user/register",
   async (user, thunkAPI) => {
     try {
-      const newUser = await registerUser(user);
-      return newUser.data;
+      const res = await axios.post(`/auth/register`, user);
+      return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -31,7 +31,7 @@ const registerSlice = createSlice({
     },
     [registerNewUser.rejected]: (state, action) => {
       state.isLoading = false;
-      state.error = action.error;
+      state.error = action.payload;
     },
   },
 });

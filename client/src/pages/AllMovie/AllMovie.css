@@ -4,12 +4,12 @@
 
 @layer components {
   .movie-main {
-    @apply flex py-5 px-4;
+    @apply flex py-8 px-4 mb-10;
   }
   .filter {
-    @apply w-1/5 text-base;
+    @apply w-1/5 text-base pl-5;
   }
   .movie-list {
-    @apply w-4/5 flex flex-wrap justify-start pl-10;
+    @apply w-4/5 flex flex-wrap justify-start ml-10;
   }
 }

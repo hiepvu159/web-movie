@@ -9,4 +9,10 @@
   .search-content {
     @apply flex flex-wrap justify-start items-stretch;
   }
+  .search-form {
+    @apply relative text-center;
+  }
+  .search-box {
+    @apply p-4 mx-4 w-5/6 text-sm text-black rounded border border-gray-500 outline-0;
+  }
 }

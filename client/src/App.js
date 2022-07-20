@@ -13,19 +13,22 @@ import CreateMovie from "./pages/ManageMovie/CreateMovie";
 import Manage from "./pages/ManageMovie/Manage";
 import EditMovie from "./pages/ManageMovie/EditMovie/EditMovie";
 import ErrorPage from "./pages/ErrorPage";
-import "./App.css";
+import ManageUser from "./pages/User/ManageUser";
+import EditUser from "./pages/User/Edit";
+import CreateUser from "./pages/User/CreateUser";
 
 function App() {
-  const { isLoggedIn, currentUser } = useSelector((state) => state.auth);
+  const currentUser = useSelector((state) => state.auth.currentUser);
+
   const PrivateRoute = ({ children }) => {
     return currentUser.isAdmin ? children : <ErrorPage />;
   };
 
   const LoginRoute = ({ children }) => {
-    return !isLoggedIn ? children : <ErrorPage />;
+    return !currentUser ? children : <ErrorPage />;
   };
   const ProtectedRoute = ({ children }) => {
-    return !isLoggedIn || !currentUser.isAdmin ? children : <ErrorPage />;
+    return !currentUser || !currentUser.isAdmin ? children : <ErrorPage />;
   };
   return (
     <div className="App">
@@ -43,9 +46,9 @@ function App() {
           <Route
             path="/register"
             element={
-              <ProtectedRoute>
+              <LoginRoute>
                 <Register />
-              </ProtectedRoute>
+              </LoginRoute>
             }
           />
           <Route
@@ -112,6 +115,30 @@ function App() {
             element={
               <PrivateRoute>
                 <Manage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/user"
+            element={
+              <PrivateRoute>
+                <ManageUser />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/user/edit/:id"
+            element={
+              <PrivateRoute>
+                <EditUser />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/user/create"
+            element={
+              <PrivateRoute>
+                <CreateUser />
               </PrivateRoute>
             }
           />

@@ -1,5 +1,4 @@
 const User = require("../models/User");
-const jwt = require("jsonwebtoken");
 const CryptoJS = require("crypto-js");
 
 const userController = {
@@ -23,6 +22,33 @@ const userController = {
       res.status(200).json(info);
     } catch (error) {
       res.status(500).json(error);
+    }
+  },
+  createUser: async (req, res) => {
+    const { username, name, password, avatar } = req.body;
+    const userExists = await User.findOne({ username });
+
+    if (!username || !name || !password) {
+      res.status(400).json("Please add all fields");
+    }
+    if (userExists) {
+      res.status(400).json("Tên tài khoản đã tồn tại");
+    } else {
+      const newUser = new User({
+        username: username,
+        name: name,
+        password: CryptoJS.AES.encrypt(
+          password,
+          process.env.SECRET_KEY
+        ).toString(),
+        avatar: avatar,
+      });
+      try {
+        const saveUser = await newUser.save();
+        res.status(201).json(saveUser);
+      } catch (err) {
+        res.status(500).json(err);
+      }
     }
   },
   updateUser: async (req, res) => {

@@ -19,7 +19,7 @@
     @apply bg-gray-800 flex text-white w-full;
   }
   .table-body {
-    @apply bg-gray-200 flex flex-col items-center justify-between overflow-y-scroll w-full h-[28rem];
+    @apply bg-gray-200 flex flex-col justify-between overflow-y-scroll w-full h-[28rem];
   }
   .action {
     @apply mr-4;
@@ -29,6 +29,9 @@
   }
   .col-item {
     @apply text-center text-sm py-4 mx-5 w-1/4;
+  }
+  .col-user {
+    @apply text-right text-sm py-4 mx-5 w-1/4;
   }
   .btn-create {
     @apply text-white bg-indigo-800 px-3 py-2 rounded-lg hover:bg-red-500;

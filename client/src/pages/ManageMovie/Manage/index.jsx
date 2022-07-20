@@ -1,15 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { deleteMovie, getMovies } from "../../../services/movie";
 import "./Manage.css";
+import { useSelector } from "react-redux";
+import Dialog from "../../../components/Dialog";
 
 function Manage() {
+  const token = useSelector((state) => state.auth.currentUser.accessToken);
   const [movies, setMovies] = useState([]);
-
+  const [dialog, setDialog] = useState({
+    isLoading: false,
+  });
+  const idMovieRef = useRef();
+  const handleDialog = (isLoading) => {
+    setDialog({
+      isLoading,
+    });
+  };
+  const handleDelete = (id) => {
+    handleDialog(true);
+    idMovieRef.current = id;
+  };
+  const confirmDelete = async (choose) => {
+    if (choose) {
+      await deleteMovie(idMovieRef.current, token);
+      handleDialog("", false);
+    } else {
+      handleDialog("", false);
+    }
+  };
   useEffect(() => {
     getMovies(setMovies);
-  }, []);
+  }, [dialog.isLoading]);
 
   return (
     <div className="w-full">
@@ -28,8 +51,8 @@ function Manage() {
                 <th className="col-name">Tên phim</th>
                 <th className="col-name">Thể loại</th>
                 <th className="col-name">Loại phim</th>
-                <th className="col-name">Tình trạng</th>
-                <th className="col-name ">Năm phát hành</th>
+                <th className="col-name">Năm</th>
+
                 <th className="col-name action ">Action</th>
               </tr>
             </thead>
@@ -39,19 +62,15 @@ function Manage() {
                   <td className="col-item ">{movie.name}</td>
                   <td className="col-item">{movie.category}</td>
                   <td className="col-item">{movie.type}</td>
-                  <td className="col-item">{movie.status}</td>
                   <td className="col-item">{movie.year}</td>
+
                   <td className="col-item">
                     <Link to={`/admin/movie/edit/${movie._id}`}>
                       <button>
                         <AiFillEdit className="icon-edit" />
                       </button>
                     </Link>
-                    <button
-                      onClick={() => {
-                        deleteMovie(movie._id);
-                      }}
-                    >
+                    <button onClick={() => handleDelete(movie._id)}>
                       <AiFillDelete className="icon-delete" />
                     </button>
                   </td>
@@ -59,6 +78,7 @@ function Manage() {
               ))}
             </tbody>
           </table>
+          {dialog.isLoading && <Dialog onDialog={confirmDelete} />}
         </div>
       </div>
     </div>

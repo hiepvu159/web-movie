@@ -4,13 +4,16 @@
 
 @layer components {
   .form-movie {
-    @apply flex justify-evenly w-full sticky;
+    @apply flex justify-evenly w-full;
   }
   .form-add {
     @apply flex flex-col px-3 py-2 w-full;
   }
   .form-input {
     @apply w-full p-1 mt-1 border border-slate-600 rounded;
+  }
+  .form-file {
+    @apply w-full py-1 pr-1 mt-1;
   }
   .form-content {
     @apply w-full p-1 mt-1 border border-slate-600 rounded resize-none;

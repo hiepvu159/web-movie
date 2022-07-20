@@ -1,11 +1,11 @@
 export const options = [
   {
-    value: "Hành động",
-    label: "Hành động",
+    value: "Hành Động",
+    label: "Hành Động",
   },
   {
-    value: "Tâm lý",
-    label: "Tâm lý",
+    value: "Tâm Lý",
+    label: "Tâm Lý",
   },
   {
     value: "Tình cảm",
@@ -30,5 +30,27 @@ export const options = [
   {
     value: "Hài",
     label: "Hài",
+  },
+];
+
+export const isAdmin = [
+  {
+    value: "true",
+    label: "true",
+  },
+  {
+    value: "false",
+    label: "false",
+  },
+];
+
+export const roleOptions = [
+  {
+    value: "Admin",
+    label: "Admin",
+  },
+  {
+    value: "User",
+    label: "User",
   },
 ];

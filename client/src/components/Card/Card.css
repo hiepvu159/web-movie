@@ -4,18 +4,18 @@
 
 @layer components {
   .card {
-    @apply relative flex-shrink-0 w-[9.5rem] h-[23rem] rounded-lg mx-3 my-6 shadow-xl;
+    @apply relative flex-shrink-0 w-[9.8rem] h-[23rem] rounded-lg mx-3 my-6 shadow-xl;
   }
   .card-image {
     @apply w-full h-56 rounded-t-lg;
   }
   .card-desc {
-    @apply flex flex-col p-1;
+    @apply flex flex-col;
   }
   .card-name {
-    @apply font-medium text-base font-bold mb-2 overflow-hidden;
+    @apply font-medium text-base font-bold p-2 mb-2 overflow-hidden;
   }
   .card-info {
-    @apply absolute bottom-0 text-base;
+    @apply absolute bottom-0 text-base p-2;
   }
 }
