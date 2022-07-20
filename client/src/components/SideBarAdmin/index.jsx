@@ -14,33 +14,43 @@ function SideBarAdmin() {
     await logoutUser(dispatch, navigate);
   };
   return (
-    <nav className="sidebar-admin">
-      <div>
-        <div className="sidebar-admin-banner">
-          <span className="admin-title">ADMIN</span>
-        </div>
-        <div className="sidebar-admin-category">
-          <Link to="/admin/user">
-            <div className="admin-category">
-              <HiOutlineUserGroup className="admin-category-icon" />
-              <span className="">Quản lý người dùng</span>
+    <>
+      {user && user.isAdmin ? (
+        <nav className="sidebar-admin">
+          <div>
+            <div className="sidebar-admin-banner">
+              <span className="admin-title">ADMIN</span>
             </div>
-          </Link>
-          <Link to="/admin/movie">
-            <div className="admin-category">
-              <HiOutlineFilm className="admin-category-icon" />
-              <span className="">Quản lý danh sách phim</span>
+            <div className="sidebar-admin-category">
+              <Link to="/admin/user">
+                <div className="admin-category">
+                  <HiOutlineUserGroup className="admin-category-icon" />
+                  <span className="">Quản lý người dùng</span>
+                </div>
+              </Link>
+              <Link to="/admin/movie">
+                <div className="admin-category">
+                  <HiOutlineFilm className="admin-category-icon" />
+                  <span className="">Quản lý danh sách phim</span>
+                </div>
+              </Link>
             </div>
-          </Link>
-        </div>
-      </div>
-      <div className="flex justify-center mb-5">
-        <div className="mb-1 text-white text-xl">{user.name}</div>
-        <Link to="/login" onClick={handleLogOut}>
-          <IoLogOutOutline className="admin-logout" />
-        </Link>
-      </div>
-    </nav>
+          </div>
+          <div className="flex justify-center mb-5">
+            {user ? (
+              <div className="mb-1 text-white text-xl">{user.name}</div>
+            ) : (
+              <div className="mb-1 text-white text-xl"></div>
+            )}
+            <Link to="/login" onClick={handleLogOut}>
+              <IoLogOutOutline className="admin-logout" />
+            </Link>
+          </div>
+        </nav>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }
 

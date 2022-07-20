@@ -21,9 +21,8 @@ function App() {
   const currentUser = useSelector((state) => state.auth.currentUser);
 
   const PrivateRoute = ({ children }) => {
-    return currentUser.isAdmin ? children : <ErrorPage />;
+    return currentUser && currentUser.isAdmin ? children : <ErrorPage />;
   };
-
   const LoginRoute = ({ children }) => {
     return !currentUser ? children : <ErrorPage />;
   };

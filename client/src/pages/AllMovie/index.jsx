@@ -7,13 +7,9 @@ import { options } from "../../gener";
 import "./AllMovie.css";
 
 function AllMovie() {
-  const [categorySelected, setCategorySelected] = useState(null);
+  const [categorySelected, setCategorySelected] = useState("Tất Cả");
   const [movies, setMovies] = useState([]);
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    setCategorySelected(null);
-  };
   useEffect(() => {
     getMovies(setMovies);
   }, []);
@@ -23,21 +19,15 @@ function AllMovie() {
         <div className="mb-5">
           <label>Danh mục</label>
           <Select
+            defaultValue={options[0]}
             options={options}
-            value={categorySelected}
             className="w-full border border-slate-600 rounded"
             onChange={(e) => setCategorySelected(e.value)}
           />
         </div>
-        <button
-          className="bg-slate-800 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded"
-          onClick={handleClick}
-        >
-          Xóa đã mục chọn
-        </button>
       </div>
       <div className="movie-list">
-        {categorySelected
+        {categorySelected != "Tất Cả"
           ? movies
               .filter((movie) => movie.category.includes(categorySelected))
               .map((item) => (

@@ -29,24 +29,13 @@ function MoviePage() {
       <InfoMovie data={movie} />
       <div className="main">
         <div className="main-content">
-          <div>
-            <ReactPlayer
-              url={movie.link}
-              controls={true}
-              width="100%"
-              height="100%"
-            />
-          </div>
-
-          <div className="user-action">
-            <div className="btn-turnoff">
-              <FaRegLightbulb />
-              <button type="button">Tắt đèn</button>
-            </div>
-            <div className="action-rating">Rating</div>
-          </div>
+          <ReactPlayer
+            url={movie.link}
+            controls={true}
+            width="100%"
+            height="100%"
+          />
         </div>
-        {/* <SideBarUser /> */}
       </div>
     </>
   );

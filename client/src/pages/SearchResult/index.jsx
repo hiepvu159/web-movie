@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { getMovies } from "../../services/movie";
 import { Link } from "react-router-dom";
 import Card from "../../components/Card";
-
 import "./SearchResult.css";
 
 function SearchResult() {
@@ -33,17 +32,11 @@ function SearchResult() {
             .filter((movie) =>
               movie.name.toLowerCase().includes(searchTerm.trim().toLowerCase())
             )
-            .map((item) =>
-              !item ? (
-                <div className="py-3 w-full text-center">
-                  <label>Không tìm thấy phim phù hợp</label>
-                </div>
-              ) : (
-                <Link to={`/movies/${item._id}`} key={item._id}>
-                  <Card key={item._id} data={item} />
-                </Link>
-              )
-            )}
+            .map((item) => (
+              <Link to={`/movies/${item._id}`} key={item._id}>
+                <Card key={item._id} data={item} />
+              </Link>
+            ))}
         </div>
       ) : (
         <div className="py-3 text-center">

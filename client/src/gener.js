@@ -1,5 +1,9 @@
 export const options = [
   {
+    value: "Tất Cả",
+    label: "Tất Cả",
+  },
+  {
     value: "Hành Động",
     label: "Hành Động",
   },
@@ -8,8 +12,8 @@ export const options = [
     label: "Tâm Lý",
   },
   {
-    value: "Tình cảm",
-    label: "Tình cảm",
+    value: "Tình Cảm",
+    label: "Tình Cảm",
   },
   {
     value: "Kinh Dị",

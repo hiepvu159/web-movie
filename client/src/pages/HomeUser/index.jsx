@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Banner from "../../components/Banner";
 import Card from "../../components/Card";
 import { getMovies } from "../../services/movie";
@@ -16,7 +17,9 @@ function HomeUser() {
       <div className="homeuser-movies">Tổng hợp phim</div>
       <div className="container-list">
         {movies.map((movie) => (
-          <Card data={movie} key={movie.id} />
+          <Link to={`/movies/${movie._id}`}>
+            <Card data={movie} key={movie._id} />
+          </Link>
         ))}
       </div>
     </>
