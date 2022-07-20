@@ -4,12 +4,9 @@
 
 @layer components {
   .homeuser-movies {
-    @apply pl-4 pt-5 font-logo text-4xl;
+    @apply pl-10 py-5 font-bold text-3xl;
   }
   .container-list {
-    @apply flex flex-wrap justify-start w-full overflow-x-auto;
-  }
-  .container-list-item {
-    @apply col-span-2;
+    @apply flex flex-wrap justify-evenly px-10;
   }
 }

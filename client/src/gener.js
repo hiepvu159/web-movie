@@ -12,45 +12,27 @@ export const options = [
     label: "Tình cảm",
   },
   {
-    value: "Kinh dị",
-    label: "Kinh dị",
+    value: "Kinh Dị",
+    label: "Kinh Dị",
   },
   {
-    value: "Viễn tưởng",
-    label: "Viễn tưởng",
+    value: "Viễn Tưởng",
+    label: "Viễn Tưởng",
   },
   {
-    value: "Phiêu lưu",
-    label: "Phiêu lưu",
+    value: "Phiêu Lưu",
+    label: "Phiêu Lưu",
   },
   {
-    value: "Gia đình",
-    label: "Gia đình",
+    value: "Gia Đình",
+    label: "Gia Đình",
   },
   {
-    value: "Hài",
-    label: "Hài",
-  },
-];
-
-export const isAdmin = [
-  {
-    value: "true",
-    label: "true",
+    value: "Hài Hước",
+    label: "Hài Hước",
   },
   {
-    value: "false",
-    label: "false",
-  },
-];
-
-export const roleOptions = [
-  {
-    value: "Admin",
-    label: "Admin",
-  },
-  {
-    value: "User",
-    label: "User",
+    value: "Bí Ẩn",
+    label: "Bí Ẩn",
   },
 ];

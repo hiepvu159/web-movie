@@ -40,17 +40,11 @@ function AllMovie() {
         {categorySelected
           ? movies
               .filter((movie) => movie.category.includes(categorySelected))
-              .map((item) =>
-                !item ? (
-                  <div className="py-3 w-full text-center">
-                    <label>Không tìm thấy phim phù hợp</label>
-                  </div>
-                ) : (
-                  <Link to={`/movies/${item._id}`} key={item._id}>
-                    <Card key={item._id} data={item} />
-                  </Link>
-                )
-              )
+              .map((item) => (
+                <Link to={`/movies/${item._id}`} key={item._id}>
+                  <Card key={item._id} data={item} />
+                </Link>
+              ))
           : movies.map((movie) => (
               <Link to={`/movies/${movie._id}`} key={movie._id}>
                 <Card data={movie} />

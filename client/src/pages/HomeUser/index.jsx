@@ -1,23 +1,23 @@
-import React from "react";
-import ListCard from "../../components/ListCard";
+import React, { useEffect, useState } from "react";
 import Banner from "../../components/Banner";
+import Card from "../../components/Card";
+import { getMovies } from "../../services/movie";
 import "./HomeUser.css";
 
 function HomeUser() {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    getMovies(setMovies);
+  }, []);
   return (
     <>
       <Banner />
-      <h1 className="homeuser-movies">Phim Lẻ</h1>
+      <div className="homeuser-movies">Tổng hợp phim</div>
       <div className="container-list">
-        <ListCard className="container-list-item" />
-      </div>
-      <h1 className="homeuser-movies">Phim Bộ</h1>
-      <div className="container-list">
-        <ListCard className="container-list-item" />
-      </div>
-      <h1 className="homeuser-movies">Phim Chiếu Rạp</h1>
-      <div className="container-list">
-        <ListCard className="container-list-item" />
+        {movies.map((movie) => (
+          <Card data={movie} key={movie.id} />
+        ))}
       </div>
     </>
   );

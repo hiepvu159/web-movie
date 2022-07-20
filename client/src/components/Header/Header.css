@@ -25,7 +25,10 @@
     @apply text-white px-5 hover:underline;
   }
   .header-login {
-    @apply py-[3.3rem] text-white;
+    @apply flex py-[3.3rem] text-white;
+  }
+  .avatar-user {
+    @apply w-10 h-10 rounded-full mt-[2.8rem] mr-2;
   }
   .banner {
     @apply relative w-full h-96 object-cover;

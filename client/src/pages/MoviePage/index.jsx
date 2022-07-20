@@ -3,7 +3,6 @@ import ReactPlayer from "react-player";
 import { FaRegLightbulb } from "react-icons/fa";
 import axios from "axios";
 import { useParams } from "react-router";
-import SideBarUser from "../../components/SideBarUser";
 import InfoMovie from "../../components/InfoMovie";
 
 import "./MoviePage.css";
