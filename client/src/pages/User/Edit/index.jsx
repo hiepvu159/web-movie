@@ -134,7 +134,7 @@ export default function EditUser() {
                 </button>
               )}
               <button className="btn-create" onClick={handleSubmit}>
-                Tạo tài khoản
+                Cập nhật
               </button>
             </div>
           </div>

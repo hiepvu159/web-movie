@@ -113,7 +113,7 @@ function Register(props) {
               </div>
               <Link to="/login">
                 <div className="action-login">
-                  <button className="btn-login">Quay về trang đăng ký</button>
+                  <button className="btn-login">Quay về trang đăng nhập</button>
                 </div>
               </Link>
             </div>
