@@ -81,7 +81,10 @@ export default function EditUser() {
               />
             </div>
             <div className="form-add">
-              <label>Ảnh đại diện</label>
+              <div className="flex">
+                <label>Ảnh đại diện</label>
+                <img src={userInfo.avatar} alt="avatar" className="avatar" />
+              </div>
               <input
                 type="file"
                 className="form-file"

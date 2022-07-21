@@ -6,8 +6,8 @@ import storage from "../../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { addMovies } from "../../../services/movie";
 import { option } from "../../../gener";
-import "./CreateMovie.css";
 import Status from "../../../components/Status";
+import "./CreateMovie.css";
 
 export default function CreateMovie() {
   const token = useSelector((state) => state.auth.currentUser.accessToken);
@@ -190,6 +190,7 @@ export default function CreateMovie() {
             <Link to="/admin/movie">
               <button className="btn-create">Quay về</button>
             </Link>
+
             <div>
               {!poster && !trailer && !thumb && !link ? (
                 <button className="btn-disabled" disabled>

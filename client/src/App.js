@@ -11,7 +11,7 @@ import Register from "./pages/Register";
 import SearchResult from "./pages/SearchResult";
 import CreateMovie from "./pages/ManageMovie/CreateMovie";
 import Manage from "./pages/ManageMovie/Manage";
-import EditMovie from "./pages/ManageMovie/EditMovie/EditMovie";
+import EditMovie from "./pages/ManageMovie/EditMovie";
 import ErrorPage from "./pages/ErrorPage";
 import ManageUser from "./pages/User/ManageUser";
 import EditUser from "./pages/User/Edit";

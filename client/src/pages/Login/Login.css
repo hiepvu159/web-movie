@@ -18,13 +18,7 @@
   .login-main-form {
     @apply xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0;
   }
-  .login-social {
-    @apply flex flex-row items-center justify-center lg:justify-start;
-  }
-  .login-social-text {
-    @apply text-lg mb-0 mr-4 font-bold;
-  }
-  .separate {
+  s .separate {
     @apply flex items-center mb-8 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5;
   }
   .separate-text {
@@ -42,12 +36,6 @@
   .login-action {
     @apply flex justify-between items-center mb-6;
   }
-  .form-checkbox {
-    @apply appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer;
-  }
-  .form-checkbox-text {
-    @apply inline-block text-gray-800;
-  }
   .action-login {
     @apply text-center lg:text-left;
   }
@@ -59,5 +47,8 @@
   }
   .login-register {
     @apply text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out;
+  }
+  .error {
+    @apply text-red-600;
   }
 }

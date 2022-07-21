@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -24,7 +24,7 @@ function Login() {
   const {
     register,
     handleSubmit,
-    watch,
+
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const [errorMessage, setErrorMessage] = useState("");

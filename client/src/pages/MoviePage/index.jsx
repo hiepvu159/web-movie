@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import ReactPlayer from "react-player";
-import { FaRegLightbulb } from "react-icons/fa";
 import axios from "axios";
 import { useParams } from "react-router";
 import InfoMovie from "../../components/InfoMovie";
