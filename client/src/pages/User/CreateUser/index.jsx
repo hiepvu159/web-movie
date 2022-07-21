@@ -56,7 +56,6 @@ export default function CreateUser() {
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            console.log("File available at", url);
             setUser((prev) => {
               return { ...prev, [item.label]: url };
             });
