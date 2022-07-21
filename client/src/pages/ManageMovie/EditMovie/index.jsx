@@ -6,6 +6,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import storage from "../../../firebase";
 import { getMovieById, updateMovie } from "../../../services/movie";
 import { option } from "../../../gener";
+import Status from "../../../components/Status";
 import "./EditMovie.css";
 
 export default function EditMovie() {
@@ -18,6 +19,11 @@ export default function EditMovie() {
   const [poster, setPoster] = useState("");
   const [trailer, setTrailer] = useState("");
   const [link, setLink] = useState("");
+  const [load, setLoad] = useState(null);
+  const [check, setCheck] = useState(0);
+  const [status, setStatus] = useState({
+    isLoading: false,
+  });
   const param = useParams();
   const { id } = param;
 
@@ -32,7 +38,11 @@ export default function EditMovie() {
       [e.target.name]: value,
     });
   };
-
+  const handleStatus = (isLoading) => {
+    setStatus({
+      isLoading,
+    });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     await updateMovie(movie, token, id, navigate);
@@ -40,6 +50,7 @@ export default function EditMovie() {
 
   const handleUpload = (e) => {
     e.preventDefault();
+    handleStatus(true);
     setMovie({ ...movie, category: categorySelected });
     uploaded([
       { file: poster, label: "poster_url" },
@@ -58,7 +69,8 @@ export default function EditMovie() {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(progress);
+
+          setLoad(progress);
         },
         (error) => {
           console.log(error);
@@ -68,6 +80,7 @@ export default function EditMovie() {
             setMovie((prev) => {
               return { ...prev, [item.label]: url };
             });
+            setCheck((prev) => prev + 1);
           });
         }
       );
@@ -212,15 +225,29 @@ export default function EditMovie() {
               <button className="btn-create">Quay về</button>
             </Link>
             <div>
-              <button className="btn-upload" onClick={handleUpload}>
-                Upload file
-              </button>
+              {!poster && !trailer && !thumb && !link ? (
+                <button className="btn-disabled" disabled>
+                  Upload file
+                </button>
+              ) : (
+                <button className="btn-upload" onClick={handleUpload}>
+                  Upload file
+                </button>
+              )}
               <button className="btn-create" onClick={handleSubmit}>
                 Cập nhật
               </button>
             </div>
           </div>
         </form>
+        {status.isLoading && (
+          <Status
+            load={load}
+            check={check}
+            checked={4}
+            onStatus={() => setStatus(false)}
+          />
+        )}
       </div>
     </div>
   );

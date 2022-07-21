@@ -5,12 +5,18 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { getUserById, updateUser } from "../../../services/user";
 import { useSelector } from "react-redux";
 import "./edit.css";
+import Status from "../../../components/Status";
 
 export default function EditUser() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
   const [avatar, setAvatar] = useState(null);
   const [user, setUser] = useState({});
+  const [load, setLoad] = useState(null);
+  const [check, setCheck] = useState(0);
+  const [status, setStatus] = useState({
+    isLoading: false,
+  });
   const token = useSelector((state) => state.auth.currentUser.accessToken);
 
   const param = useParams();
@@ -24,7 +30,11 @@ export default function EditUser() {
     const value = e.target.value;
     setUser({ ...user, [e.target.name]: value });
   };
-
+  const handleStatus = (isLoading) => {
+    setStatus({
+      isLoading,
+    });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     await updateUser(user, token, id, navigate);
@@ -32,6 +42,8 @@ export default function EditUser() {
 
   const handleUpload = (e) => {
     e.preventDefault();
+    handleStatus(true);
+
     uploaded([{ file: avatar, label: "avatar" }]);
   };
 
@@ -44,17 +56,17 @@ export default function EditUser() {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
+          setLoad(progress);
         },
         (error) => {
           console.log(error);
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            console.log("File available at", url);
             setUser((prev) => {
               return { ...prev, [item.label]: url };
             });
+            setCheck((prev) => prev + 1);
           });
         }
       );
@@ -112,15 +124,29 @@ export default function EditUser() {
               <button className="btn-create">Quay về</button>
             </Link>
             <div>
-              <button className="btn-upload" onClick={handleUpload}>
-                Upload ảnh
-              </button>
+              {!avatar ? (
+                <button className="btn-disabled" disabled>
+                  Upload ảnh
+                </button>
+              ) : (
+                <button className="btn-upload" onClick={handleUpload}>
+                  Upload ảnh
+                </button>
+              )}
               <button className="btn-create" onClick={handleSubmit}>
-                Cập nhật
+                Tạo tài khoản
               </button>
             </div>
           </div>
         </form>
+        {status.isLoading && (
+          <Status
+            load={load}
+            check={check}
+            checked={1}
+            onStatus={() => setStatus(false)}
+          />
+        )}
       </div>
     </div>
   );

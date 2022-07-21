@@ -6,11 +6,19 @@ import { useSelector } from "react-redux";
 import ErrorPage from "../../pages/ErrorPage";
 
 function Layout() {
+  const user = useSelector((state) => state.auth.currentUser);
+
   return (
     <>
-      <Header />
-      <Outlet />
-      <Footer />
+      {user && user.isAdmin ? (
+        <ErrorPage />
+      ) : (
+        <>
+          <Header />
+          <Outlet />
+          <Footer />
+        </>
+      )}
     </>
   );
 }

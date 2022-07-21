@@ -1,26 +1,16 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams } from "react-router";
 import ReactPlayer from "react-player";
 import InfoMovie from "../../components/InfoMovie";
 import "./LandingPage.css";
+import { getMovieById } from "../../services/movie";
 
 function LandingPage() {
   const param = useParams();
   const { id } = param;
   const [movie, setMovie] = useState([]);
   useEffect(() => {
-    const getMovie = async (id) => {
-      try {
-        await axios.get(`/movies/find/${id}`).then((res) => {
-          setMovie(res.data);
-          console.log(res.data);
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getMovie(id);
+    getMovieById(id, setMovie);
   }, [id]);
   return (
     <>
