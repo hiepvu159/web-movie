@@ -49,7 +49,7 @@ function ManageUser() {
               <tr className="flex w-full">
                 <th className="col-name">Tên người dùng</th>
                 <th className="col-name">Tên tài khoản</th>
-                <th className="col-name">Quyền</th>
+                <th className="col-name">Chức vụ</th>
                 <th className="col-name action ">Action</th>
               </tr>
             </thead>

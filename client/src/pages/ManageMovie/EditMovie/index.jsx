@@ -179,7 +179,11 @@ export default function EditMovie() {
             <div className="form-add">
               <div className="info">
                 <label>Thể loại</label>
-                <div>: {movieInfo.category}</div>
+                {movieInfo.category ? (
+                  <div>: {movieInfo.category.join(",")}</div>
+                ) : (
+                  <></>
+                )}
               </div>
               <Select
                 name="category"
@@ -188,7 +192,13 @@ export default function EditMovie() {
                 isClearable
                 getOptionLabel={(option) => option.label}
                 getOptionValue={(option) => option.value}
-                defaultValue={movieInfo.category}
+                defaultValue={
+                  movieInfo.category
+                    ? option.filter((item) =>
+                        movieInfo.category.includes(item.value)
+                      )
+                    : []
+                }
                 className="w-full border border-slate-600 rounded"
                 onChange={(e) =>
                   setCategorySelected(

@@ -103,7 +103,6 @@ export default function CreateMovie() {
                 type="file"
                 className="form-file"
                 onChange={(e) => setPoster(e.target.files[0])}
-                // {...register("poster")}
               />
             </div>
           </div>
@@ -192,7 +191,7 @@ export default function CreateMovie() {
             </Link>
 
             <div>
-              {!poster && !trailer && !thumb && !link ? (
+              {!poster && !thumb ? (
                 <button className="btn-disabled" disabled>
                   Upload file
                 </button>
