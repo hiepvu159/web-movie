@@ -13,7 +13,7 @@ function SearchResult() {
   }, []);
 
   return (
-    <div className="p-3 mb-[10rem]">
+    <div className="p-3 mb-[1rem]">
       <div>
         <div className="search-form">
           <input
@@ -29,8 +29,12 @@ function SearchResult() {
       {searchTerm ? (
         <div className="search-content">
           {movies
-            .filter((movie) =>
-              movie.name.toLowerCase().includes(searchTerm.trim().toLowerCase())
+            .filter(
+              (movie) =>
+                movie.name
+                  .toLowerCase()
+                  .includes(searchTerm.trim().toLowerCase()) ||
+                movie.year.toString().includes(searchTerm)
             )
             .map((item) => (
               <Link to={`/movies/${item._id}`} key={item._id}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "./InfoMovie.css";
@@ -10,6 +10,14 @@ InfoMovie.propTypes = {
   category: PropTypes.array,
   type: PropTypes.string,
   year: PropTypes.number,
+};
+InfoMovie.defaultProps = {
+  name: null,
+  thumb_url: null,
+  poster_url: null,
+  category: [],
+  type: null,
+  year: null,
 };
 
 function InfoMovie(props) {
@@ -24,9 +32,14 @@ function InfoMovie(props) {
             <div className="name-movie">
               <section className="content-name">{data.name}</section>
             </div>
-            <section className="content-text">
-              Thể loại: {data.category}
-            </section>
+            {data.category ? (
+              <section className="content-text">
+                Thể loại: {data.category.join(",")}
+              </section>
+            ) : (
+              <section className="content-text">Thể loại:</section>
+            )}
+
             <section className="content-text">Danh mục: {data.type}</section>
             <section className="content-text">Năm:{data.year}</section>
 

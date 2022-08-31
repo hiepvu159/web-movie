@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { IoLogOutOutline } from "react-icons/io5";
 import { logoutUser } from "../../services/auth";
-import logo from "../../assets/logo.png";
 import avatar from "../../assets/avatar.jpg";
 import "./Header.css";
+import { useEffect } from "react";
 
 function Header() {
+  const [isOpen, setIsOpen] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,13 +18,12 @@ function Header() {
     await logoutUser(dispatch, navigate);
   };
   return (
-    <header className="header">
-      <div className="header-left-item">
+    <div className="navbar">
+      <div className="header">
         <div className="header-left">
-          <img src={logo} className="header-logo" alt="Movie Logo" />
+          {/* <img src={logo} className="header-logo" alt="Movie Logo" /> */}
           <h1 className="header-name">Movie</h1>
-        </div>
-        <div className="header-category">
+
           <Link to="/" className="category-item">
             Trang chủ
           </Link>
@@ -34,25 +34,40 @@ function Header() {
             Tìm kiếm
           </Link>
         </div>
-      </div>
-      {user ? (
-        <div className="flex">
-          <img
-            src={user.avatar || avatar}
-            alt="avatar"
-            className="avatar-user"
-          />
-          <div className="header-login">{user.name}</div>
-          <Link to="/" onClick={handleLogOut}>
-            <IoLogOutOutline className="my-0 mx-auto mt-[3.3rem] ml-2 text-white text-2xl" />
-          </Link>
+        <div className="header-right">
+          {user ? (
+            <div className="flex items-center">
+              <button onClick={() => setIsOpen(!isOpen)}>
+                <img
+                  src={user.avatar || avatar}
+                  alt="avatar"
+                  className="avatar-user"
+                />
+              </button>
+              {isOpen && (
+                <div className="z-50 bg-white absolute top-3/4 right-8 px-4 py-2">
+                  <div className="menu-item ">{user.name}</div>
+                  <div className="menu-item">Chỉnh sửa thông tin</div>
+                  <Link to="/" onClick={handleLogOut}>
+                    <div className="menu-item border-t border-slate-400">
+                      Đăng Xuất
+                    </div>
+                  </Link>
+                </div>
+              )}
+              <div className="profile">
+                {/* <BsCaretDownFill className="group mx-2 text-white cursor-pointer" /> */}
+                <div className="hidden bg-black group-hover:flex flex-col absolute bg-white"></div>
+              </div>
+            </div>
+          ) : (
+            <Link to="/login" className="header-login">
+              Đăng nhập
+            </Link>
+          )}
         </div>
-      ) : (
-        <Link to="/login" className="header-login">
-          Đăng nhập
-        </Link>
-      )}
-    </header>
+      </div>
+    </div>
   );
 }
 

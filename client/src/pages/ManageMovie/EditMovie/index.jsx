@@ -188,7 +188,9 @@ export default function EditMovie() {
                 isClearable
                 getOptionLabel={(option) => option.label}
                 getOptionValue={(option) => option.value}
-                defaultValue={movieInfo.category}
+                defaultValue={option.filter(
+                  (item) => item.value === movieInfo.category
+                )}
                 className="w-full border border-slate-600 rounded"
                 onChange={(e) =>
                   setCategorySelected(

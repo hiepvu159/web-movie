@@ -60,7 +60,7 @@ function Manage() {
               {movies.map((movie) => (
                 <tr className="flex w-full mb-4" key={movie._id}>
                   <td className="col-item ">{movie.name}</td>
-                  <td className="col-item">{movie.category}</td>
+                  <td className="col-item">{movie.category.join(", ")}</td>
                   <td className="col-item">{movie.type}</td>
                   <td className="col-item">{movie.year}</td>
 
