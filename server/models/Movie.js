@@ -42,7 +42,7 @@ const movieSchema = new mongoose.Schema(
       type: Array,
       required: true,
     },
-    link: {
+    episodes: {
       type: String,
       required: true,
     },

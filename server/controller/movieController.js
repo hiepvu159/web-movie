@@ -14,6 +14,30 @@ const movieController = {
       res.status(403).json("You are not allowed!");
     }
   },
+  filterMovieByName: async (req, res) => {
+    const nameMovie = req.params.name;
+    try {
+      const movies = await Movie.find({name: {$regex: nameMovie, $options: 'i'}});
+      res.status(200).json(movies.reverse());
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+  filterMovieByCategory: async (req, res) => {
+    const category = req.params.category;
+    const resultCategory = await Category.findOne({value: category});
+
+    try {
+      if(resultCategory) {
+        const movies = await Movie.find({ category: {$eq: resultCategory.value}});
+        res.status(200).json(movies.reverse());
+      }else {
+        res.status(500).json(error);
+      }
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
   getAllMovie: async (req, res) => {
     try {
       const movies = await Movie.find();

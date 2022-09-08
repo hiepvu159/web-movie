@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getMovies } from "../../services/movie";
 import { Link } from "react-router-dom";
 import Card from "../../components/Card";
@@ -6,8 +7,9 @@ import "./SearchResult.css";
 
 function SearchResult() {
   const [movies, setMovies] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  const handleSumbit = () => {};
   useEffect(() => {
     getMovies(setMovies);
   }, []);
@@ -16,17 +18,20 @@ function SearchResult() {
     <div className="p-3 mb-[1rem]">
       <div>
         <div className="search-form">
-          <input
-            type="search"
-            id="default-search"
-            className="search-box"
-            placeholder="Điền tên phim muốn tìm kiếm. . . . "
-            autoComplete="off"
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          <form onSubmit={handleSumbit}>
+            <input
+              type="search"
+              id="default-search"
+              className="search-box"
+              placeholder="Điền tên phim muốn tìm kiếm. . . . "
+              autoComplete="off"
+              // value={searchParams}
+              onChange={(e) => setSearchParams({ name: e.target.value })}
+            />
+          </form>
         </div>
       </div>
-      {searchTerm ? (
+      {/* {searchTerm ? (
         <div className="search-content">
           {movies
             .filter(
@@ -46,7 +51,7 @@ function SearchResult() {
         <div className="py-3 text-center">
           <label>Hãy nhập để tìm kiếm phim</label>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

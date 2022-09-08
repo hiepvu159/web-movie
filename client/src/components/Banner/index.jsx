@@ -24,18 +24,18 @@ function Banner() {
         navigation
         pagination={{ clickable: true }}
         scrollbar={{ draggable: true }}
-        onSwiper={(swiper) => console.log(swiper)}
-        onSlideChange={() => console.log("slide change")}
       >
         {movies.map((movie) => (
           <SwiperSlide>
-            <div className="h-1/3">
-              <img src={movie.thumb_url} alt="thumb" className="thumbnail" />
-              <div>
+            <div>
+              <img src={movie.thumb_url} alt="thumb" className="swiper-img" />
+              <div className="swiper-info">
                 <div className="swiper-name">{movie.name}</div>
-                {movie.category.map((ctg) => (
-                  <div className="swiper-category">{ctg}</div>
-                ))}
+                <div className="flex">
+                  {movie.category.map((ctg) => (
+                    <div className="swiper-category">{ctg}</div>
+                  ))}
+                </div>
               </div>
             </div>
           </SwiperSlide>

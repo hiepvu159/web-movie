@@ -35,3 +35,10 @@ export const deleteMovie = async (id, token) => {
     },
   });
 };
+
+export const getInfo = async (src, setMovie, setLink) => {
+  await axios.get(`${src}`).then((res) => {
+    setMovie(res.data.movie);
+    setLink(res.data);
+  });
+};

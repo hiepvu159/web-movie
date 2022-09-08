@@ -1,219 +1,327 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import Select from "react-select";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
-import storage from "../../../firebase";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { addMovies } from "../../../services/movie";
-import { option } from "../../../gener";
-import Status from "../../../components/Status";
+import { addMovies, getInfo } from "../../../services/movie";
 import "./CreateMovie.css";
 
 export default function CreateMovie() {
   const token = useSelector((state) => state.auth.currentUser.accessToken);
   const navigate = useNavigate();
-  const [movie, setMovie] = useState(null);
-  const [categorySelected, setCategorySelected] = useState([]);
-  const [thumb, setThumb] = useState(null);
-  const [poster, setPoster] = useState(null);
-  const [trailer, setTrailer] = useState(null);
-  const [link, setLink] = useState(null);
-  const [load, setLoad] = useState(null);
-  const [check, setCheck] = useState(0);
-  const [status, setStatus] = useState({
-    isLoading: false,
+  const [src, setSrc] = useState("");
+  const [movie, setMovie] = useState([]);
+  const [link, setLink] = useState([]);
+
+  const schema = yup.object().shape({
+    name: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    content: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    thumb: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    poster: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    trailer: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    type: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    status: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    category: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    link: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
   });
 
-  const handleStatus = (isLoading) => {
-    setStatus({
-      isLoading,
-    });
-  };
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema) });
+
   const handleChange = (e) => {
-    const value = e.target.value;
-    setMovie({
-      ...movie,
-      [e.target.name]: value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
     e.preventDefault();
-    await addMovies(movie, token, navigate);
+    setSrc(e.target.value);
   };
 
-  const handleUpload = (e) => {
-    e.preventDefault();
-    handleStatus(true);
-    setMovie({ ...movie, category: categorySelected });
-    uploaded([
-      { file: poster, label: "poster_url" },
-      { file: trailer, label: "trailer_url" },
-      { file: thumb, label: "thumb_url" },
-      { file: link, label: "link" },
-    ]);
-  };
-
-  const uploaded = (items) => {
-    items.forEach((item) => {
-      const imgRef = ref(storage, `/items/${item.file.name}`);
-      const uploadTask = uploadBytesResumable(imgRef, item.file);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-          setLoad(progress);
-        },
-        (error) => {
-          console.log(error);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            setMovie((prev) => {
-              return { ...prev, [item.label]: url };
-            });
-            setCheck((prev) => prev + 1);
-          });
-        }
-      );
-    });
+  const onSubmit = async (e) => {
+    const newMovie = {
+      name: e.name,
+      origin_name: e.origin_name,
+      thumb_url: e.thumb,
+      poster_url: e.poster,
+      trailer_url: e.trailer,
+      type: e.type,
+      actor: e.actor,
+      director: e.director,
+      country: e.country,
+      status: e.status,
+      category: e.category,
+      content: e.content,
+      episodes: e.link,
+    };
+    console.log(newMovie);
+    // await addMovies(infoMovie, token, navigate);
   };
 
   return (
-    <div className="w-full pr-3">
-      <div className="font-bold text-3xl pt-5 pl-1">Tạo Phim Mới</div>
-      <div className=" py-8">
-        <form>
-          <div className="form-movie">
-            <div className="form-add">
-              <label>Tên phim</label>
-              <input
-                name="name"
-                type="text"
-                className="form-input"
-                autoComplete="off"
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-add">
-              <label>Poster</label>
-              <input
-                type="file"
-                className="form-file"
-                onChange={(e) => setPoster(e.target.files[0])}
-              />
-            </div>
-          </div>
-
-          <div className="form-movie">
-            <div className="form-add">
-              <label>Năm sản xuất</label>
-              <input
-                name="year"
-                type="text"
-                className="form-input"
-                autoComplete="off"
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="form-add">
-              <label>Trailer</label>
-              <input
-                type="file"
-                className="form-file"
-                onChange={(e) => setTrailer(e.target.files[0])}
-              />
-            </div>
-          </div>
-          <div className="form-movie">
-            <div className="form-add">
-              <label>Danh mục</label>
-              <input
-                name="type"
-                type="text"
-                className="form-input"
-                autoComplete="off"
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-add">
-              <label>Thumbnail</label>
-              <input
-                type="file"
-                className="form-file"
-                onChange={(e) => setThumb(e.target.files[0])}
-              />
-            </div>
-          </div>
-          <div className="form-movie">
-            <div className="form-add">
-              <label>Thể loại</label>
-              <Select
-                name="category"
-                options={option}
-                isMulti
-                isClearable
-                getOptionLabel={(option) => option.label}
-                getOptionValue={(option) => option.value}
-                className="w-full border border-slate-600 rounded"
-                onChange={(e) =>
-                  setCategorySelected(
-                    Array.isArray(e) ? e.map((x) => x.value) : []
-                  )
-                }
-              />
-            </div>
-            <div className="form-add">
-              <label>Nguồn phim</label>
-              <input
-                type="file"
-                className="form-file"
-                onChange={(e) => setLink(e.target.files[0])}
-              />
-            </div>
-          </div>
-          <div className="form-add">
-            <label>Nội dung</label>
-            <textarea
-              name="content"
-              type="text"
-              className="form-content"
-              autoComplete="off"
-              onChange={handleChange}
-            />
-          </div>
-          <div type="submit" className="flex justify-between mt-5 px-3">
-            <Link to="/admin/movie">
-              <button className="btn-create">Quay về</button>
-            </Link>
-
-            <div>
-              {!poster && !thumb ? (
-                <button className="btn-disabled" disabled>
-                  Upload file
-                </button>
-              ) : (
-                <button className="btn-upload" onClick={handleUpload}>
-                  Upload file
-                </button>
-              )}
-              <button className="btn-create" onClick={handleSubmit}>
-                Cập nhật
-              </button>
-            </div>
-          </div>
-        </form>
-        {status.isLoading && (
-          <Status
-            load={load}
-            check={check}
-            checked={4}
-            onStatus={() => setStatus(false)}
+    <div className="w-full px-10">
+      <div className="font-bold text-3xl py-5 pl-1 p">Tạo Phim Mới</div>
+      <div>
+        <label
+          for="first_name"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+        >
+          Nguồn phim
+        </label>
+        <div className="flex">
+          <input
+            type="text"
+            id="first_name"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Điền nguồn vào đây..."
+            required=""
+            autoComplete="off"
+            onChange={handleChange}
           />
-        )}
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-lg"
+            onClick={() => getInfo(src, setMovie, setLink)}
+          >
+            Nhập
+          </button>
+        </div>
+      </div>
+      <div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid gap-6 mb-6 md:grid-cols-2">
+            <div>
+              <label
+                for="first_name"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Tên Phim
+              </label>
+              <input
+                type="text"
+                id="first_name"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                value={movie.name}
+                {...register("name")}
+              />
+            </div>
+            <div>
+              <label
+                for="last_name"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Tên Gốc
+              </label>
+              <input
+                type="text"
+                id="last_name"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                value={movie.origin_name}
+                {...register("origin_name")}
+              />
+            </div>
+            <div>
+              <label
+                for="company"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Thumbnail URL
+              </label>
+              <input
+                type="text"
+                id="poster"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                value={movie.poster_url}
+                {...register("poster")}
+              />
+            </div>
+            <div>
+              <label
+                for="phone"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Poster
+              </label>
+              <input
+                type="text"
+                id="thumb"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                value={movie.thumb_url}
+                {...register("thumb")}
+              />
+            </div>
+            <div>
+              <label
+                for="website"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Danh mục
+              </label>
+              <input
+                type="text"
+                id="website"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                value={movie.type}
+                {...register("type")}
+              />
+            </div>
+            <div>
+              <label
+                for="visitors"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Thể Loại
+              </label>
+              <input
+                type="text"
+                id="visitors"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movie?.category?.map((i) => i.name)}
+                {...register("category")}
+              />
+            </div>
+            <div>
+              <label
+                for="company"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Năm
+              </label>
+              <input
+                type="text"
+                id="company"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                value={movie.year}
+                {...register("year")}
+              />
+            </div>
+            <div>
+              <label
+                for="company"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Quốc Gia
+              </label>
+              <input
+                type="text"
+                id="company"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                value={movie?.country?.map((i) => i.name)}
+                {...register("country")}
+              />
+            </div>
+            <div>
+              <label
+                for="company"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Đạo diễn
+              </label>
+              <input
+                type="text"
+                id="company"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                value={movie?.director?.join(", ")}
+                {...register("director")}
+              />
+            </div>
+            <div>
+              <label
+                for="company"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Diễn viên
+              </label>
+              <input
+                type="text"
+                id="company"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                value={movie?.actor?.join(", ")}
+                {...register("actor")}
+              />
+            </div>
+            <div>
+              <label
+                for="company"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Số tập hiện tại
+              </label>
+              <input
+                type="text"
+                id="company"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                value={movie.episode_current}
+                {...register("episode_current")}
+              />
+            </div>
+            <div>
+              <label
+                for="company"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Tổng số tập
+              </label>
+              <input
+                type="text"
+                id="company"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                value={movie.episode_total}
+                {...register("episode_total")}
+              />
+            </div>
+            <div>
+              <label
+                for="content"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Nội Dung
+              </label>
+              <textarea
+                type="text"
+                id="content"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg resize-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movie.content}
+                autoComplete="off"
+                {...register("content")}
+              />
+            </div>
+            <div>
+              <label
+                for="company"
+                className="block  invisible  mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Tập
+              </label>
+              <input
+                type="text"
+                id="company"
+                className="bg-gray-50 border invisible  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                value={link}
+                {...register("link")}
+              />
+            </div>
+          </div>
+          <button
+            type="submit"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Submit
+          </button>
+        </form>
       </div>
     </div>
   );

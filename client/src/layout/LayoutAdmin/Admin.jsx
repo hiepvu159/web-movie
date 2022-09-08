@@ -11,10 +11,8 @@ function Layout() {
     <>
       {user && user.isAdmin ? (
         <div className="flex">
-          <div className="w-1/5">
-            <SideBarAdmin />
-          </div>
-          <div className="w-4/5">
+          <SideBarAdmin />
+          <div className="w-full ml-56">
             <Outlet />
           </div>
         </div>

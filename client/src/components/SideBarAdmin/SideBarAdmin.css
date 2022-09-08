@@ -4,7 +4,7 @@
 
 @layer components {
   .sidebar-admin {
-    @apply flex flex-col justify-between fixed h-screen bg-stone-900;
+    @apply w-[14rem] flex flex-col justify-between fixed h-screen bg-stone-900;
   }
   .sidebar-admin-banner {
     @apply flex justify-center;

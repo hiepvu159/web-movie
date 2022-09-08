@@ -7,6 +7,6 @@
     @apply py-5 font-bold text-3xl;
   }
   .container-list {
-    @apply grid grid-cols-5 gap-5 px-10 items-center;
+    @apply flex flex-wrap justify-start w-full overflow-x-auto;
   }
 }

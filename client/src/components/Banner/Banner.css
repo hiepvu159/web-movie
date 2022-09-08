@@ -3,10 +3,16 @@
 @tailwind utilities;
 
 @layer components {
-  .banner {
-    @apply h-1/3;
-  }
   .swiper-img {
-    @apply h-2/3 w-full object-cover;
+    @apply relative h-[40rem] w-full object-cover brightness-[0.2];
+  }
+  .swiper-info {
+    @apply absolute bottom-[10rem] left-[5rem];
+  }
+  .swiper-name{
+    @apply text-white text-4xl font-bold tracking-wider mb-5;
+  }
+  .swiper-category{
+    @apply border border-spacing-0 mr-3 text-white p-2; 
   }
 }
