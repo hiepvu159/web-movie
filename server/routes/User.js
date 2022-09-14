@@ -13,7 +13,8 @@ router.post("/new", verify, userController.createUser);
 router.put("/:id", verify, userController.updateUser);
 //Delete User
 router.delete("/:id", verify, userController.deleteUser);
-
+//Get A User
+router.get("/profile/:id", userController.getUserById);
 //request User
 
 module.exports = router;

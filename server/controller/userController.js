@@ -24,6 +24,14 @@ const userController = {
       res.status(500).json(error);
     }
   },
+  getUserById: async (req, res) => {
+    try {
+      const movie = await User.findById(req.params.id);
+      res.status(200).json(movie);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
   createUser: async (req, res) => {
     const { username, name, password, avatar } = req.body;
     const userExists = await User.findOne({ username });

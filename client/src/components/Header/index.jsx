@@ -46,8 +46,12 @@ function Header() {
               </button>
               {isOpen && (
                 <div className="z-50 bg-white absolute top-3/4 right-8 px-4 py-2">
-                  <div className="menu-item ">{user.name}</div>
-                  <div className="menu-item">Chỉnh sửa thông tin</div>
+                  <Link to="/profile">
+                    <div className="menu-item ">{user.name}</div>
+                  </Link>
+                  <Link to="/profile/:id">
+                    <div className="menu-item">Chỉnh sửa thông tin</div>
+                  </Link>
                   <Link to="/" onClick={handleLogOut}>
                     <div className="menu-item border-t border-slate-400">
                       Đăng Xuất

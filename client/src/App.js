@@ -16,6 +16,8 @@ import ErrorPage from "./pages/ErrorPage";
 import ManageUser from "./pages/User/ManageUser";
 import EditUser from "./pages/User/Edit";
 import CreateUser from "./pages/User/CreateUser";
+import Profile from "./pages/Profile";
+import EditProfile from "./pages/Profile/EditProfile";
 
 function App() {
   const currentUser = useSelector((state) => state.auth.currentUser);
@@ -71,6 +73,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <LandingPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile/:id"
+            element={
+              <ProtectedRoute>
+                <EditProfile />
               </ProtectedRoute>
             }
           />

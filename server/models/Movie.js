@@ -30,6 +30,21 @@ const movieSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    director: {
+      type: Array,
+    },
+    status: {
+      type: String,
+    },
+    episode_current: {
+      type: String,
+    },
+    episode_total: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
     actor: {
       type: Array,
       required: true,
@@ -43,7 +58,7 @@ const movieSchema = new mongoose.Schema(
       required: true,
     },
     episodes: {
-      type: String,
+      type: Array,
       required: true,
     },
   },
