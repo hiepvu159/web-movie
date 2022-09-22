@@ -12,18 +12,23 @@ function MoviePage() {
   useEffect(() => {
     getMovieById(id, setMovie);
   }, []);
-
+  // console.log(movie?.episodes[0]?.link_m3u8);
   return (
     <>
       <InfoMovie data={movie} />
       <div className="main">
         <div className="main-content">
           <ReactPlayer
-            url={movie.link}
+            url={movie?.episodes}
             controls={true}
             width="100%"
             height="100%"
           />
+        </div>
+        <div className="flex">
+          {movie?.episodes?.map((ep) => (
+            <div>{ep.name}</div>
+          ))}
         </div>
       </div>
     </>

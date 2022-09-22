@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getMovies } from "../../services/movie";
+import { getMovies, searchMovie } from "../../services/movie";
 import { Link } from "react-router-dom";
 import Card from "../../components/Card";
 import "./SearchResult.css";
 
 function SearchResult() {
+  const [allMovies, setAllMovies] = useState([]);
   const [movies, setMovies] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const searchTerm = searchParams.get("name");
 
-  const handleSumbit = () => {};
   useEffect(() => {
-    getMovies(setMovies);
+    searchMovie(searchTerm, setMovies);
+  }, [searchParams]);
+
+  useEffect(() => {
+    getMovies(setAllMovies);
   }, []);
 
   return (
     <div className="p-3 mb-[1rem]">
       <div>
         <div className="search-form">
-          <form onSubmit={handleSumbit}>
+          <form>
             <input
               type="search"
               id="default-search"
@@ -30,28 +35,28 @@ function SearchResult() {
             />
           </form>
         </div>
+        <div className="grid grid-cols-6 gap-5 my-10">
+          {!searchTerm || searchTerm === "" ? (
+            allMovies?.map((movie) => (
+              <div className="mx-auto">
+                <Link to={`/movies/${movie._id}`} key={movie._id}>
+                  <Card data={movie} />
+                </Link>
+              </div>
+            ))
+          ) : movies.length === 0 ? (
+            <div className=" col-span-6 text-center">Khong tim thay</div>
+          ) : (
+            movies?.map((movie) => (
+              <div className="mx-auto">
+                <Link to={`/movies/${movie._id}`} key={movie._id}>
+                  <Card data={movie} />
+                </Link>
+              </div>
+            ))
+          )}
+        </div>
       </div>
-      {/* {searchTerm ? (
-        <div className="search-content">
-          {movies
-            .filter(
-              (movie) =>
-                movie.name
-                  .toLowerCase()
-                  .includes(searchTerm.trim().toLowerCase()) ||
-                movie.year.toString().includes(searchTerm)
-            )
-            .map((item) => (
-              <Link to={`/movies/${item._id}`} key={item._id}>
-                <Card key={item._id} data={item} />
-              </Link>
-            ))}
-        </div>
-      ) : (
-        <div className="py-3 text-center">
-          <label>Hãy nhập để tìm kiếm phim</label>
-        </div>
-      )} */}
     </div>
   );
 }

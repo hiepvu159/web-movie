@@ -53,7 +53,7 @@ function App() {
             }
           />
           <Route
-            path="/search"
+            path="/movies/search"
             element={
               <ProtectedRoute>
                 <SearchResult />
@@ -61,7 +61,7 @@ function App() {
             }
           />
           <Route
-            path="/movies"
+            path="/movies/filter"
             element={
               <ProtectedRoute>
                 <AllMovie />

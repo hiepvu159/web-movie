@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 @layer components {
-  .main {
+  /* .main {
     @apply flex;
-  }
+  } */
   .main-content {
     @apply px-24 py-5;
   }

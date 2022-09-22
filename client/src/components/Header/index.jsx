@@ -27,10 +27,10 @@ function Header() {
           <Link to="/" className="category-item">
             Trang chủ
           </Link>
-          <Link to="/movies" className="category-item">
+          <Link to="/movies/filter" className="category-item">
             Phim
           </Link>
-          <Link to="/search" className="category-item">
+          <Link to="/movies/search" className="category-item">
             Tìm kiếm
           </Link>
         </div>

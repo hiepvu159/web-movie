@@ -8,9 +8,9 @@ router.post("/", verify, movieController.addMovie);
 //Get All Movie
 router.get("/", movieController.getAllMovie);
 //Filter Movie By Name
-router.get("/search/:name", movieController.filterMovieByName);
-//Filter Movie By Category 
-router.get("/filter-category/:category", movieController.filterMovieByCategory);
+router.get("/search/name=:name", movieController.filterMovieByName);
+//Filter Movie By Category
+router.get("/filter/name=:category", movieController.filterMovieByCategory);
 //Get Random Movie
 router.get("/random", movieController.getRandomMovie);
 //Get A Movie

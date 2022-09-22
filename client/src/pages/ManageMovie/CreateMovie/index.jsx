@@ -40,31 +40,29 @@ export default function CreateMovie() {
     setSrc(e.target.value);
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     const newMovie = {
       name: e.name,
       origin_name: e.origin_name,
+      content: e.content,
       thumb_url: e.thumb_url,
       poster_url: e.poster_url,
       trailer_url: e.trailer_url,
       type: e.type,
-      actor: e.actor,
       director: e.director,
-      country: e.country,
-      status: e.status,
-      category: e.category,
-      content: e.content,
-      episodes: episodes,
       status: e.status,
       episode_current: e.episode_current,
       episode_total: e.episode_total,
+      country: e.country,
+      actor: e.actor,
+      year: e.year,
+      category: e.category,
+      episodes: episodes.episodes[0].server_data,
     };
-    console.log(newMovie);
-    // console.log(movie);
-    // console.log(link);
-    // await addMovies(infoMovie, token, navigate);
+
+    // console.log(episodes.episodes[0].server_data);
+    await addMovies(newMovie, token, navigate);
   };
-  // console.log(name);
   return (
     <div className="w-full px-10">
       <div className="font-bold text-3xl py-5 pl-1 p">Tạo Phim Mới</div>

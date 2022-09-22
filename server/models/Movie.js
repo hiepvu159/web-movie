@@ -5,7 +5,6 @@ const movieSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      unique: true,
     },
     origin_name: {
       type: String,
@@ -47,11 +46,9 @@ const movieSchema = new mongoose.Schema(
     },
     actor: {
       type: Array,
-      required: true,
     },
     year: {
       type: Number,
-      required: true,
     },
     category: {
       type: Array,

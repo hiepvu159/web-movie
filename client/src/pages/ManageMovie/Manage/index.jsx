@@ -5,7 +5,7 @@ import { deleteMovie, getMovies } from "../../../services/movie";
 import "./Manage.css";
 import { useSelector } from "react-redux";
 import Dialog from "../../../components/Dialog";
-import { Divider, Radio, Table } from "antd";
+import { Space, Table, Tag } from "antd";
 
 function Manage() {
   const token = useSelector((state) => state.auth.currentUser.accessToken);
@@ -20,6 +20,7 @@ function Manage() {
       isLoading,
     });
   };
+
   const handleDelete = (id) => {
     handleDialog(true);
     idMovieRef.current = id;
@@ -45,7 +46,6 @@ function Manage() {
             <button className="btn-create">Tạo mới</button>
           </Link>
         </div>
-
         <div>
           <table className="movie-table">
             <thead className="table-head">

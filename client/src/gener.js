@@ -1,9 +1,5 @@
 export const options = [
   {
-    value: "Tất Cả",
-    label: "Tất Cả",
-  },
-  {
     value: "Hành Động",
     label: "Hành Động",
   },

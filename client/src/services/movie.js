@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import axios from "axios";
 
 export const getMovies = async (setMovies) => {
@@ -8,6 +9,18 @@ export const getMovies = async (setMovies) => {
 
 export const getMovieById = async (id, setMovie) => {
   await axios.get(`/movies/find/${id}`).then((res) => setMovie(res.data));
+};
+
+export const searchMovie = async (params, setMovie) => {
+  await axios.get(`/movies/search/name=${params}`).then((res) => {
+    setMovie(res.data);
+  });
+};
+
+export const filterMovie = async (params, setMovie) => {
+  await axios.get(`/movies/filter/name=${params}`).then((res) => {
+    setMovie(res.data);
+  });
 };
 
 export const addMovies = async (movie, token, navigate) => {
