@@ -17,26 +17,36 @@ const movieController = {
   filterMovieByName: async (req, res) => {
     const nameMovie = req.params.name;
     try {
-      const movies = await Movie.find({name: {$regex: nameMovie, $options: 'i'}});
+      const movies = await Movie.find({
+        name: { $regex: nameMovie, $options: "i" },
+      });
       res.status(200).json(movies.reverse());
     } catch (error) {
       res.status(500).json(error);
     }
   },
   filterMovieByCategory: async (req, res) => {
-    const category = req.params.category;
-    const resultCategory = await Category.findOne({value: category});
+    const category = req.params.category.replace("-", " ");
+    const resultCategory = await Movie.findOne({ value: category });
 
     try {
-      if(resultCategory) {
-        const movies = await Movie.find({ category: {$eq: resultCategory.value}});
+      if (resultCategory) {
+        const movies = await Movie.find({
+          category: { $eq: category },
+        });
         res.status(200).json(movies.reverse());
-      }else {
+      } else {
         res.status(500).json(error);
       }
     } catch (error) {
       res.status(500).json(error);
     }
+  },
+  getEpisodeMovie: async (req, res) => {
+    const fileName = req.params.fileName;
+    try {
+      const episode = await Movie.episode.find;
+    } catch (error) {}
   },
   getAllMovie: async (req, res) => {
     try {
