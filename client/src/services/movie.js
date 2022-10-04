@@ -6,7 +6,16 @@ export const getMovies = async (setMovies) => {
     setMovies(res.data);
   });
 };
-
+export const getMoviesSeries = async (setMovies) => {
+  await axios.get(`/movies/series`).then((res) => {
+    setMovies(res.data);
+  });
+};
+export const getMoviesSingle = async (setMovies) => {
+  await axios.get(`/movies/single`).then((res) => {
+    setMovies(res.data);
+  });
+};
 export const getMovieById = async (id, setMovie) => {
   await axios.get(`/movies/find/${id}`).then((res) => setMovie(res.data));
 };

@@ -4,9 +4,6 @@
 
 @layer components {
   .homeuser-movies {
-    @apply py-5 font-bold text-3xl;
-  }
-  .container-list {
-    @apply flex flex-wrap justify-start w-full overflow-x-auto;
+    @apply px-5 py-5 font-bold text-3xl;
   }
 }

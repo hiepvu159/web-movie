@@ -7,6 +7,12 @@ const router = require("express").Router();
 router.post("/", verify, movieController.addMovie);
 //Get All Movie
 router.get("/", movieController.getAllMovie);
+//Get new Movie
+router.get("/new", movieController.getNewMovie);
+//Get movies series
+router.get("/series", movieController.getMovieSeries);
+//Get movies single
+router.get("/single", movieController.getMovieSingle);
 //Filter Movie By Name
 router.get("/search/name=:name", movieController.filterMovieByName);
 //Filter Movie By Category

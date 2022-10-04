@@ -42,11 +42,34 @@ const movieController = {
       res.status(500).json(error);
     }
   },
-  getEpisodeMovie: async (req, res) => {
-    const fileName = req.params.fileName;
+  getMovieSeries: async (req, res) => {
     try {
-      const episode = await Movie.episode.find;
-    } catch (error) {}
+      const moviesSeries = await Movie.find({
+        type: { $eq: "series" },
+      });
+      res.status(200).json(moviesSeries.reverse());
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+  getMovieSingle: async (req, res) => {
+    try {
+      const moviesSingle = await Movie.find({
+        type: { $eq: "single" },
+      });
+      res.status(200).json(moviesSingle.reverse());
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  },
+  getNewMovie: async (req, res) => {
+    try {
+      const movies = await Movie.find();
+      const newMovies = movies.reverse().slice(0, 10);
+      res.status(200).json(newMovies);
+    } catch (error) {
+      res.status(500).json(error);
+    }
   },
   getAllMovie: async (req, res) => {
     try {
