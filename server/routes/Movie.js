@@ -25,4 +25,9 @@ router.get("/find/:id", movieController.getAMovie);
 router.put("/:id", verify, movieController.updateMovie);
 //Delete Movie
 router.delete("/:id", verify, movieController.deleteMovie);
+//Add comment
+router.post("/post", movieController.addComment);
+//Delete comment
+router.delete("/post/delete/:id", movieController.deleteComment);
+
 module.exports = router;

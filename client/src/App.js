@@ -18,6 +18,7 @@ import EditUser from "./pages/User/Edit";
 import CreateUser from "./pages/User/CreateUser";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/Profile/EditProfile";
+import Dashboard from "./pages/DashBoard";
 
 function App() {
   const currentUser = useSelector((state) => state.auth.currentUser);
@@ -43,7 +44,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/register"
             element={
@@ -111,6 +111,14 @@ function App() {
         </Route>
 
         <Route element={<Admin />}>
+          <Route
+            path="/admin/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/admin/movie/create"
             element={

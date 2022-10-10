@@ -126,6 +126,50 @@ const movieController = {
       res.status(403).json("You are not allowed to delete");
     }
   },
+  addComment: async (req, res) => {
+    const matched = await v.check;
+    const comment = {
+      comment: req.body.comment,
+      postedBy: req.user._id,
+    };
+    Movie.findByIdAndUpdate(
+      req.body.postId,
+      {
+        $push: { comments: comment },
+      },
+      {
+        new: true,
+      }
+    )
+      .populate("comments.postedBy", "_id name")
+      .populate("postedBy", "_id name")
+      .exec((err, result) => {
+        if (err) {
+          return res.status(422).json({ error: err });
+        } else {
+          res.json(result);
+        }
+      });
+  },
+  deleteComment: async (req, res) => {
+    Movie.findOne({ _id: req.params._id })
+      .populate("postedBy", "_id")
+      .exec((err, post) => {
+        if (err || !post) {
+          return res.status(422).json({ error: err });
+        }
+        if (post.postedBy._id.toString() === req.user._id.toString()) {
+          post
+            .remove()
+            .then((result) => {
+              res.json(result);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      });
+  },
 };
 
 module.exports = movieController;

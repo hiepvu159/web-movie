@@ -8,6 +8,7 @@ import { getMovieById, updateMovie } from "../../../services/movie";
 import { option } from "../../../gener";
 import Status from "../../../components/Status";
 import "./EditMovie.css";
+import { useForm } from "react-hook-form";
 
 export default function EditMovie() {
   const token = useSelector((state) => state.auth.currentUser.accessToken);
@@ -24,6 +25,8 @@ export default function EditMovie() {
   const [status, setStatus] = useState({
     isLoading: false,
   });
+  // const []
+  const [name, setName] = useState("");
   const param = useParams();
   const { id } = param;
 
@@ -43,10 +46,10 @@ export default function EditMovie() {
       isLoading,
     });
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await updateMovie(movie, token, id, navigate);
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   await updateMovie(movie, token, id, navigate);
+  // };
 
   const handleUpload = (e) => {
     e.preventDefault();
@@ -86,172 +89,262 @@ export default function EditMovie() {
       );
     });
   };
+  const onSubmit = async (e) => {
+    const update = {
+      name: e.name,
+      origin_name: e.origin_name,
+      content: e.content,
+      thumb_url: e.thumb_url,
+      poster_url: e.poster_url,
+      trailer_url: e.trailer_url,
+      type: e.type,
+      director: e.director,
+      status: e.status,
+      episode_current: e.episode_current,
+      episode_total: e.episode_total,
+      country: e.country,
+      actor: e.actor,
+      year: e.year,
+      category: e.category,
+      // episodes: episodes.episodes[0].server_data,
+    };
+    console.log(update);
+    // console.log(episodes.episodes[0].server_data);
+    // await updateMovie(update, token, id, navigate);
+  };
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({});
+
   return (
-    <div className="w-full px-3">
-      <div className="font-bold text-3xl pt-5 pl-1">Cập nhật</div>
-      <div className=" py-8">
-        <form>
-          <div className="form-movie">
-            <div className="form-add">
-              <label>Tên phim</label>
+    <div className="w-full px-10">
+      <div className="font-bold text-3xl py-5 pl-1 p">Chỉnh sửa thông tin</div>
 
-              <input
-                defaultValue={movieInfo.name}
-                required
-                name="name"
-                type="text"
-                className="form-input"
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-add">
-              <div className="info">
-                <label>Poster</label>
-                <img
-                  src={movieInfo.poster_url}
-                  alt="poster"
-                  className="avatar"
-                />
-              </div>
-              <input
-                type="file"
-                className="form-file"
-                onChange={(e) => setPoster(e.target.files[0])}
-              />
-            </div>
-          </div>
-          <div className="form-movie">
-            <div className="form-add">
-              <label>Năm sản xuất</label>
-              <input
-                defaultValue={movieInfo.year}
-                required
-                name="year"
-                type="text"
-                className="form-input"
-                autoComplete="off"
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-add">
-              <div className="info">
-                <label>Trailer</label>
-                {movieInfo.trailer_url ? <p>: Đã có video</p> : <></>}
-              </div>
-              <input
-                type="file"
-                className="form-file"
-                onChange={(e) => setTrailer(e.target.files[0])}
-              />
-            </div>
-          </div>
-          <div className="form-movie">
-            <div className="form-add">
-              <label>Danh mục</label>
-
-              <input
-                defaultValue={movieInfo.type}
-                required
-                name="type"
-                type="text"
-                className="form-input"
-                autoComplete="off"
-                onChange={handleChange}
-              />
-            </div>
-            <div className="form-add">
-              <div className="info">
-                <label>Thumbnail</label>
-                <img
-                  src={movieInfo.thumb_url}
-                  alt="thumbail"
-                  className="avatar"
-                />
-              </div>
-              <input
-                type="file"
-                className="form-file"
-                onChange={(e) => setThumb(e.target.files[0])}
-              />
-            </div>
-          </div>
-          <div className="form-movie">
-            <div className="form-add">
-              <div className="info">
-                <label>Thể loại</label>
-                {movieInfo.category ? (
-                  <div>: {movieInfo.category.join(",")}</div>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <Select
-                name="category"
-                options={option}
-                isMulti
-                isClearable
-                getOptionLabel={(option) => option.label}
-                getOptionValue={(option) => option.value}
-                defaultValue={movieInfo.category}
-                className="w-full border border-slate-600 rounded"
-                onChange={(e) =>
-                  setCategorySelected(
-                    Array.isArray(e) ? e.map((x) => x.value) : []
-                  )
-                }
-              />
-            </div>
-            <div className="form-add">
-              <div className="info">
-                <label>Nguồn phim</label>
-                {movieInfo.link ? <p>: Đã có video</p> : <></>}
-              </div>
-              <input
-                type="file"
-                className="form-file"
-                onChange={(e) => setLink(e.target.files[0])}
-              />
-            </div>
-          </div>
-          <div className="form-add">
-            <label>Nội dung</label>
-            <textarea
-              defaultValue={movieInfo.content}
-              name="content"
-              type="text"
-              className="form-content"
-              autoComplete="off"
-              onChange={handleChange}
-            />
-          </div>
-          <div type="submit" className="flex justify-between mt-5 px-3">
-            <Link to="/admin/movie">
-              <button className="btn-create">Quay về</button>
-            </Link>
+      <div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
-              {!poster && !trailer && !thumb && !link ? (
-                <button className="btn-disabled" disabled>
-                  Upload file
-                </button>
-              ) : (
-                <button className="btn-upload" onClick={handleUpload}>
-                  Upload file
-                </button>
-              )}
-              <button className="btn-create" onClick={handleSubmit}>
-                Cập nhật
-              </button>
+              <label
+                for="name"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Tên Phim
+              </label>
+              <input
+                type="text"
+                id="name"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movieInfo.name}
+                onChange={(e) => setName(e.currentTarget.value)}
+                {...register("name")}
+              />
+            </div>
+            <div>
+              <label
+                for="origin"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Tên Gốc
+              </label>
+              <input
+                type="text"
+                id="origin_name"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movieInfo.origin_name}
+                {...register("origin_name")}
+              />
+            </div>
+            <div>
+              <label
+                for="poster"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Thumbnail URL
+              </label>
+              <input
+                type="text"
+                id="poster"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movieInfo.poster_url}
+                {...register("thumb_url")}
+              />
+            </div>
+            <div>
+              <label
+                for="thumb"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Poster URL
+              </label>
+              <input
+                type="text"
+                id="thumb"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movieInfo.thumb_url}
+                {...register("poster_url")}
+              />
+            </div>
+            <div>
+              <label
+                for="trailer"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Trailer URL
+              </label>
+              <input
+                type="text"
+                id="trailer"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movieInfo.trailer_url}
+                {...register("trailer_url")}
+              />
+            </div>
+            <div>
+              <label
+                for="type"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Danh mục
+              </label>
+              <input
+                type="text"
+                id="type"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movieInfo.type}
+                {...register("type")}
+              />
+            </div>
+            <div>
+              <label
+                for="category"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Thể Loại
+              </label>
+              <input
+                type="text"
+                id="category"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movieInfo?.category}
+                {...register("category")}
+              />
+            </div>
+            <div>
+              <label
+                for="year"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Năm
+              </label>
+              <input
+                type="text"
+                id="year"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movieInfo.year}
+                {...register("year")}
+              />
+            </div>
+            <div>
+              <label
+                for="country"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Quốc Gia
+              </label>
+              <input
+                type="text"
+                id="country"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movieInfo?.country}
+                {...register("country")}
+              />
+            </div>
+            <div>
+              <label
+                for="director"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Đạo diễn
+              </label>
+              <input
+                type="text"
+                id="director"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movieInfo?.director?.join(", ")}
+                {...register("director")}
+              />
+            </div>
+            <div>
+              <label
+                for="actor"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Diễn viên
+              </label>
+              <input
+                type="text"
+                id="actor"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movieInfo?.actor?.join(", ")}
+                {...register("actor")}
+              />
+            </div>
+
+            <div>
+              <label
+                for="status"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Trạng thái
+              </label>
+              <input
+                type="text"
+                id="status"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movieInfo.status}
+                {...register("status")}
+              />
+            </div>
+            <div>
+              <label
+                for="content"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Nội Dung
+              </label>
+              <textarea
+                type="text"
+                id="content"
+                className="h-24 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg resize-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required=""
+                defaultValue={movieInfo.content}
+                autoComplete="off"
+                {...register("content")}
+              />
             </div>
           </div>
+          <button
+            type="submit"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Submit
+          </button>
         </form>
-        {status.isLoading && (
-          <Status
-            load={load}
-            check={check}
-            checked={4}
-            onStatus={() => setStatus(false)}
-          />
-        )}
       </div>
     </div>
   );

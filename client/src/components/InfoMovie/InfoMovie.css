@@ -7,16 +7,13 @@
     @apply relative w-screen object-cover h-[38rem] brightness-[0.2];
   }
   .content-header {
-    @apply flex absolute inset-y-1/4 w-full h-[35rem] py-16 px-10;
+    @apply flex absolute inset-y-36 w-full py-16 px-24;
   }
   .content-poster {
     @apply h-[27rem] w-72 object-cover rounded-lg;
   }
   .content-info {
-    @apply relative w-full px-4;
-  }
-  .content-info-movie {
-    @apply absolute;
+    @apply flex flex-col justify-between h-[27rem] w-full px-4;
   }
   .name-movie {
     @apply mb-10;
@@ -31,6 +28,6 @@
     @apply text-white py-2;
   }
   .btn-play {
-    @apply absolute mt-2 top-96 bg-red-500 text-center hover:bg-red-700 text-white font-bold py-2 px-4 rounded;
+    @apply w-1/6 bg-red-500 text-center hover:bg-red-700 text-white font-bold py-2 px-4 rounded;
   }
 }

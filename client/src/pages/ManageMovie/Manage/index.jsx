@@ -6,10 +6,9 @@ import "./Manage.css";
 import { useSelector } from "react-redux";
 import Dialog from "../../../components/Dialog";
 import { Space, Table, Tag } from "antd";
-
+import { DataGrid } from "@mui/x-data-grid";
 function Manage() {
   const token = useSelector((state) => state.auth.currentUser.accessToken);
-  const [selectionType, setSelectionType] = useState("checkbox");
   const [movies, setMovies] = useState([]);
   const [dialog, setDialog] = useState({
     isLoading: false,
@@ -36,9 +35,70 @@ function Manage() {
   useEffect(() => {
     getMovies(setMovies);
   }, [dialog.isLoading]);
-
+  const columns = [
+    {
+      field: "name",
+      headerName: "Tên Phim",
+      minWidth: 400,
+    },
+    {
+      field: "category",
+      headerName: "Thể loại",
+      width: 300,
+    },
+    {
+      field: "type",
+      headerName: "Danh mục",
+      width: 200,
+    },
+    {
+      field: "status",
+      headerName: "Trạng thái",
+      width: 150,
+    },
+    {
+      field: "country",
+      headerName: "Quốc Gia",
+      width: 150,
+    },
+    {
+      field: "year",
+      headerName: "Năm",
+      width: 100,
+    },
+    {
+      field: "Action",
+      width: 150,
+      renderCell: (movie) => {
+        return (
+          <div className="items-center text-center">
+            <Link to={`/admin/movie/edit/${movie.id}`}>
+              <button>
+                <AiFillEdit className="icon-edit" />
+              </button>
+            </Link>
+            <button onClick={() => handleDelete(movie.id)}>
+              <AiFillDelete className="icon-delete" />
+            </button>
+          </div>
+        );
+      },
+    },
+  ];
+  const detailsRows = movies?.map((movie) => {
+    return {
+      id: movie?._id,
+      name: movie?.name,
+      category: movie?.category,
+      type: movie?.type,
+      country: movie?.country,
+      year: movie?.year,
+      status: movie?.status,
+      action: "",
+    };
+  });
   return (
-    <div className="w-full">
+    <div className="w-full px-6 py-5">
       <div className="manage-movie-main">
         <div className="main-title">
           <span className="action-name">Quản lý</span>
@@ -46,42 +106,15 @@ function Manage() {
             <button className="btn-create">Tạo mới</button>
           </Link>
         </div>
-        <div>
-          <table className="movie-table">
-            <thead className="table-head">
-              <tr className="flex w-full">
-                <th className="col-name">Tên phim</th>
-                <th className="col-name">Thể loại</th>
-                <th className="col-name">Loại phim</th>
-                <th className="col-name">Năm</th>
-
-                <th className="col-name action ">Action</th>
-              </tr>
-            </thead>
-            <tbody className="table-body">
-              {movies.map((movie) => (
-                <tr className="flex w-full mb-4" key={movie._id}>
-                  <td className="col-item ">{movie.name}</td>
-                  <td className="col-item">{movie.category.join(", ")}</td>
-                  <td className="col-item">{movie.type}</td>
-                  <td className="col-item">{movie.year}</td>
-
-                  <td className="col-item">
-                    <Link to={`/admin/movie/edit/${movie._id}`}>
-                      <button>
-                        <AiFillEdit className="icon-edit" />
-                      </button>
-                    </Link>
-                    <button onClick={() => handleDelete(movie._id)}>
-                      <AiFillDelete className="icon-delete" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {dialog.isLoading && <Dialog onDialog={confirmDelete} />}
-        </div>
+      </div>
+      <div style={{ height: 632, width: "100%" }}>
+        <DataGrid
+          rows={detailsRows}
+          columns={columns}
+          pageSize={10}
+          rowsPerPageOptions={[10]}
+        />
+        {dialog.isLoading && <Dialog onDialog={confirmDelete} />}
       </div>
     </div>
   );

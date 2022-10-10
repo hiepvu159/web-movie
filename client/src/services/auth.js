@@ -11,7 +11,7 @@ export const loginUser = async (user, dispatch, navigate, setErrorMessage) => {
   if (res.error) {
     setErrorMessage(res.payload.response.data);
   } else if (res.payload.isAdmin) {
-    navigate("/admin/user");
+    navigate("/admin/dashboard");
   } else navigate("/");
 };
 

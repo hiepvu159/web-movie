@@ -58,6 +58,10 @@ const movieSchema = new mongoose.Schema(
       type: Array,
       required: true,
     },
+    comments: {
+      content: String,
+      postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    },
   },
   { timestamps: true }
 );

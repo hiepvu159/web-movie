@@ -4,7 +4,8 @@ const CryptoJS = require("crypto-js");
 
 const authController = {
   register: async (req, res) => {
-    const { username, name, password } = req.body;
+    const { username, name, password, email, gender, phone, address, dob } =
+      req.body;
     const userExists = await User.findOne({ username });
 
     if (!username || !name || !password) {
@@ -15,6 +16,11 @@ const authController = {
     } else {
       const newUser = new User({
         username: username,
+        email: email,
+        gender: gender,
+        phone: phone,
+        address: address,
+        dob: dob,
         name: name,
         password: CryptoJS.AES.encrypt(
           password,

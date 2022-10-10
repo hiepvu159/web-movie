@@ -38,7 +38,6 @@ function Login() {
     };
     await loginUser(user, dispatch, navigate, setErrorMessage);
   };
-  console.log(errorMessage);
   return (
     <div className="login">
       <div className="login-main">

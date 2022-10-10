@@ -13,11 +13,13 @@ function Layout() {
       {user && user.isAdmin ? (
         <ErrorPage />
       ) : (
-        <>
+        <div className="flex flex-col min-h-screen">
           <Header />
           <Outlet />
-          <Footer />
-        </>
+          <div className="mt-auto w-full h-auto">
+            <Footer />
+          </div>
+        </div>
       )}
     </>
   );

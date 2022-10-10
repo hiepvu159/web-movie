@@ -7,7 +7,7 @@ const userController = {
     if (req.user.isAdmin) {
       try {
         const users = query ? await User.find().limit(10) : await User.find();
-        res.status(200).json(users);
+        res.status(200).json(users.reverse());
       } catch (error) {
         res.status(500).json(error);
       }
@@ -44,6 +44,11 @@ const userController = {
     } else {
       const newUser = new User({
         username: username,
+        email: email,
+        gender: gender,
+        phone: phone,
+        address: address,
+        dob: dob,
         name: name,
         password: CryptoJS.AES.encrypt(
           password,
@@ -93,6 +98,15 @@ const userController = {
       }
     } else {
       res.status(403).json("You can delete only your account");
+    }
+  },
+  getNewUser: async (req, res) => {
+    try {
+      const users = await User.find();
+      const newUsers = users.reverse().slice(0, 10);
+      res.status(200).json(newUsers);
+    } catch (error) {
+      res.status(500).json(error);
     }
   },
 };

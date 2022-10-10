@@ -37,15 +37,11 @@ function SearchResult() {
         </div>
         <div className="grid grid-cols-6 gap-5 my-10">
           {!searchTerm || searchTerm === "" ? (
-            allMovies?.map((movie) => (
-              <div className="mx-auto">
-                <Link to={`/movies/${movie._id}`} key={movie._id}>
-                  <Card data={movie} />
-                </Link>
-              </div>
-            ))
+            <></>
           ) : movies.length === 0 ? (
-            <div className=" col-span-6 text-center">Khong tim thay</div>
+            <div className=" col-span-6 text-center">
+              Không tìm thấy phim. Vui lòng nhập lại từ khóa tìm kiếm
+            </div>
           ) : (
             movies?.map((movie) => (
               <div className="mx-auto">

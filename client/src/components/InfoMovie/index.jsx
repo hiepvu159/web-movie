@@ -42,11 +42,10 @@ function InfoMovie(props) {
 
             <section className="content-text">Danh mục: {data.type}</section>
             <section className="content-text">Năm:{data.year}</section>
-
-            <Link to={`/movies/${data._id}/watch`} className="btn-play">
-              Xem phim
-            </Link>
           </div>
+          <Link to={`/movies/${data._id}/watch`} className="btn-play">
+            Xem phim
+          </Link>
         </div>
       </div>
     </div>

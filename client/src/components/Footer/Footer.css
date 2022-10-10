@@ -4,7 +4,7 @@
 
 @layer components {
   .footer {
-    @apply bg-black shadow md:px-6 md:py-8 dark:bg-gray-800;
+    @apply w-full bg-black shadow md:px-6 md:py-8 dark:bg-gray-800;
   }
   .footer-nav {
     @apply sm:flex sm:items-center sm:justify-between;

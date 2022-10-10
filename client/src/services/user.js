@@ -38,3 +38,11 @@ export const deleteUser = async (id, token) => {
     },
   });
 };
+export const getNewUser = async (setUsers) => {
+  await axios
+    .get(`/users/newuser`)
+    .then((res) => {
+      setUsers(res.data);
+    })
+    .catch((err) => console.log(err));
+};

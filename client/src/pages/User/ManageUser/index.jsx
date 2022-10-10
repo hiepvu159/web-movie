@@ -1,3 +1,4 @@
+import { DataGrid } from "@mui/x-data-grid";
 import React, { useState, useEffect, useRef } from "react";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { useSelector } from "react-redux";
@@ -33,8 +34,82 @@ function ManageUser() {
     getUsers(setUsers, token);
   }, [dialog.isLoading]);
 
+  const columns = [
+    {
+      field: "name",
+      headerName: "Tên người dùng",
+      minWidth: 220,
+    },
+    {
+      field: "username",
+      headerName: "Tên tài khoản",
+      width: 220,
+    },
+    {
+      field: "dob",
+      headerName: "Ngày sinh",
+      width: 120,
+    },
+    {
+      field: "gender",
+      headerName: "Giới tính",
+      width: 100,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      width: 200,
+    },
+    {
+      field: "phone",
+      headerName: "Số điện thoại",
+      width: 150,
+    },
+    {
+      field: "address",
+      headerName: "Địa chỉ",
+      width: 220,
+    },
+    {
+      field: "role",
+      headerName: "Chức vụ",
+      width: 120,
+    },
+    {
+      field: "Action",
+      width: 150,
+      renderCell: (movie) => {
+        return (
+          <div className="items-center text-center">
+            <Link to={`/admin/movie/edit/${movie.id}`}>
+              <button>
+                <AiFillEdit className="icon-edit" />
+              </button>
+            </Link>
+            <button onClick={() => handleDelete(movie.id)}>
+              <AiFillDelete className="icon-delete" />
+            </button>
+          </div>
+        );
+      },
+    },
+  ];
+  const detailsRows = users?.map((user) => {
+    return {
+      id: user?._id,
+      name: user?.name,
+      username: user?.username,
+      dob: user?.dob,
+      gender: user?.gender,
+      email: user?.email,
+      phone: user?.phone,
+      address: user?.address,
+      role: user?.role,
+      action: "",
+    };
+  });
   return (
-    <div className="w-full">
+    <div className="w-full px-6 py-5">
       <div className="manage-movie-main">
         <div className="main-title">
           <span className="action-name">Quản lý</span>
@@ -43,36 +118,13 @@ function ManageUser() {
           </Link>
         </div>
 
-        <div>
-          <table className="movie-table">
-            <thead className="table-head">
-              <tr className="flex w-full">
-                <th className="col-name">Tên người dùng</th>
-                <th className="col-name">Tên tài khoản</th>
-                <th className="col-name">Chức vụ</th>
-                <th className="col-name action ">Action</th>
-              </tr>
-            </thead>
-            <tbody className="table-body">
-              {users.map((user) => (
-                <tr className="flex w-full mb-4" key={user._id}>
-                  <td className="col-item ">{user.name}</td>
-                  <td className="col-item">{user.username}</td>
-                  <td className="col-item">{user.role}</td>
-                  <td className="col-item">
-                    <Link to={`/admin/user/edit/${user._id}`}>
-                      <button>
-                        <AiFillEdit className="icon-edit" />
-                      </button>
-                    </Link>
-                    <button onClick={() => handleDelete(user._id)}>
-                      <AiFillDelete className="icon-delete" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div style={{ height: 632, width: "100%" }}>
+          <DataGrid
+            rows={detailsRows}
+            columns={columns}
+            pageSize={10}
+            rowsPerPageOptions={[10]}
+          />
           {dialog.isLoading && <Dialog onDialog={confirmDelete} />}
         </div>
       </div>

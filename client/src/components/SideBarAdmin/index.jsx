@@ -1,6 +1,9 @@
 import React from "react";
-import { HiOutlineUserGroup, HiOutlineFilm } from "react-icons/hi";
-import { IoLogOutOutline } from "react-icons/io5";
+import {
+  HiOutlineUserGroup,
+  HiOutlineFilm,
+  HiOutlineClipboardList,
+} from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../services/auth";
@@ -10,9 +13,9 @@ function SideBarAdmin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.currentUser);
-  const handleLogOut = async () => {
-    await logoutUser(dispatch, navigate);
-  };
+  // const handleLogOut = async () => {
+  //   await logoutUser(dispatch, navigate);
+  // };
   return (
     <>
       {user && user.isAdmin ? (
@@ -22,6 +25,12 @@ function SideBarAdmin() {
               <span className="admin-title">ADMIN</span>
             </div>
             <div className="sidebar-admin-category">
+              <Link to="/admin/dashboard">
+                <div className="admin-category">
+                  <HiOutlineClipboardList className="admin-category-icon" />
+                  <span className="">Dashboard</span>
+                </div>
+              </Link>
               <Link to="/admin/user">
                 <div className="admin-category">
                   <HiOutlineUserGroup className="admin-category-icon" />
@@ -36,7 +45,7 @@ function SideBarAdmin() {
               </Link>
             </div>
           </div>
-          <div className="flex justify-center mb-5">
+          {/* <div className="flex justify-center mb-5">
             {user ? (
               <div className="mb-1 text-white text-xl">{user.name}</div>
             ) : (
@@ -45,7 +54,7 @@ function SideBarAdmin() {
             <Link to="/login" onClick={handleLogOut}>
               <IoLogOutOutline className="admin-logout" />
             </Link>
-          </div>
+          </div> */}
         </nav>
       ) : (
         <></>

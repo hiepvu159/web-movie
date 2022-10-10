@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import axios from "axios";
 
 export const getMovies = async (setMovies) => {
@@ -63,4 +62,13 @@ export const getInfo = async (src, setMovie, setLink) => {
     setMovie(res.data.movie);
     setLink(res.data);
   });
+};
+
+export const getNewMovie = async (setMovies) => {
+  await axios
+    .get(`/movies/new`)
+    .then((res) => {
+      setMovies(res.data);
+    })
+    .catch((err) => console.log(err));
 };

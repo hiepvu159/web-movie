@@ -12,11 +12,13 @@ function AllMovie() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [movies, setMovies] = useState([]);
   const searchTerm = searchParams.get("name");
-  console.log(searchTerm);
+
+  const handleChange = () => {};
+
   useEffect(() => {
     getMovies(setAllMovies);
   }, []);
-  console.log(movies);
+
   useEffect(() => {
     filterMovie(searchTerm, setMovies);
   }, [searchParams]);
@@ -26,6 +28,7 @@ function AllMovie() {
         <label>Danh mục</label>
         <Select
           defaultValue={""}
+          isClearable
           placeholder="Hãy chọn danh mục"
           options={options}
           className="w-full border border-slate-600 rounded"
