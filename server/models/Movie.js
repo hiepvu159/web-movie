@@ -35,12 +35,6 @@ const movieSchema = new mongoose.Schema(
     status: {
       type: String,
     },
-    episode_current: {
-      type: String,
-    },
-    episode_total: {
-      type: String,
-    },
     country: {
       type: String,
     },
@@ -57,10 +51,6 @@ const movieSchema = new mongoose.Schema(
     episodes: {
       type: Array,
       required: true,
-    },
-    comments: {
-      content: String,
-      postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     },
   },
   { timestamps: true }
