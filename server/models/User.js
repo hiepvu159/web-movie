@@ -31,7 +31,8 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "",
+      default:
+        "https://i.pinimg.com/originals/57/fb/31/57fb3190d0cc1726d782c4e25e8561e9.png",
     },
     isAdmin: {
       type: Boolean,
@@ -40,6 +41,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       default: "user",
+      required: true,
     },
   },
   { timestamps: true }

@@ -37,6 +37,14 @@ const commentController = {
       res.status(403).json("You are not allowed!");
     }
   },
+  getUserComment: async (req, res) => {
+    Comment.findById({ movieId: req.body.movieId })
+      .populate("User")
+      .exec((err, commenes) => {
+        if (err) return res.status(400).send(err);
+        res.status(200).json({ success: true, commments });
+      });
+  },
 };
 
 module.exports = commentController;

@@ -52,6 +52,18 @@ const movieSchema = new mongoose.Schema(
       type: Array,
       required: true,
     },
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
+    ratings: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Rating",
+      },
+    ],
   },
   { timestamps: true }
 );
