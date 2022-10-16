@@ -81,7 +81,10 @@ const movieController = {
   },
   getAMovie: async (req, res) => {
     try {
-      const movie = await Movie.findById(req.params.id);
+      const movie = await Movie.findById(req.params.id).populate([
+        "comments",
+        "ratings",
+      ]);
       res.status(200).json(movie);
     } catch (error) {
       res.status(500).json(error);

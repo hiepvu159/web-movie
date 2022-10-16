@@ -11,7 +11,9 @@ const passport = require("./passport");
 const movieRoute = require("./routes/Movie");
 const categoryRoute = require("./routes/Category");
 const userRoute = require("./routes/User");
-const authRoute = require("./routes/auth");
+const commentRoute = require("./routes/Comment");
+const ratingRoute = require("./routes/Rating");
+const authRoute = require("./routes/Auth");
 const port = 8000;
 
 dotenv.config();
@@ -36,6 +38,8 @@ app.use(express.json());
 app.use("/api/movies", movieRoute);
 app.use("/api/categories", categoryRoute);
 app.use("/api/users", userRoute);
+app.use("/api/comments", commentRoute);
+app.use("/api/ratings", ratingRoute);
 app.use("/api/auth", authRoute);
 
 app.listen(port, () => {

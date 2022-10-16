@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const RatingSchema = new mongoose.Schema({
   rating: {
-    type: number,
+    type: Number,
     required: true,
   },
   postedBy: {
