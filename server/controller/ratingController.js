@@ -25,6 +25,30 @@ const ratingController = {
       res.status(403).json("You are not allowed!");
     }
   },
+  // updateRating: async (req, res) => {
+  //   if (req.user) {
+  //     if()
+  //     const newRating = new Rating({
+  //       rating: req.body.rating,
+  //       movie: req.body.movie,
+  //       postedBy: req.user.id,
+  //     });
+
+  //     try {
+  //       const savedRating = await newRating.save();
+  //       await Movie.findByIdAndUpdate(
+  //         req.body.movie,
+  //         { $push: { ratings: savedRating._id } },
+  //         { new: true, useFindAndModify: false }
+  //       );
+  //       res.status(201).json(savedRating);
+  //     } catch (err) {
+  //       res.status(500).json(err);
+  //     }
+  //   } else {
+  //     res.status(403).json("You are not allowed!");
+  //   }
+  // },
   deleteRating: async (req, res) => {
     if (req.user) {
       try {

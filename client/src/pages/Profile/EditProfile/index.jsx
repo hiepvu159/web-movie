@@ -1,21 +1,148 @@
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import storage from "../../../firebase";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { getUserById, updateInfoUser } from "../../../services/user";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
+import Status from "../../../components/Status";
 function EditProfile() {
-  const user = useSelector((s) => s.auth.currentUser);
+  const currentUser = useSelector((s) => s.auth.currentUser);
+  const navigate = useNavigate();
+  const [check, setCheck] = useState(false);
+  const [user, setUser] = useState([]);
+  const [avatar, setAvatar] = useState("");
+  const [avatarPreview, setAvatarPreview] = useState("");
+  const [changeAvatar, setChangeAvatar] = useState("");
+  const [load, setLoad] = useState(null);
+  const [status, setStatus] = useState({
+    isLoading: false,
+  });
+
+  const handleStatus = (isLoading) => {
+    setStatus({
+      isLoading,
+    });
+  };
+  const callApi = async () => {
+    await getUserById(setUser, currentUser?._id);
+    setCheck(!check);
+  };
+  useEffect(() => {
+    callApi();
+  }, []);
+
+  useEffect(() => {
+    return () => avatarPreview && URL.revokeObjectURL(avatarPreview.preview);
+  }, [avatar]);
+
+  useEffect(() => {
+    if (check) {
+      let defaultValues = {};
+      defaultValues.name = `${user?.name}`;
+      defaultValues.username = `${user?.username}`;
+      defaultValues.email = `${user?.email}`;
+      defaultValues.gender = `${user?.gender}`;
+      defaultValues.phone = `${user?.phone}`;
+      defaultValues.address = `${user?.address}`;
+      defaultValues.dob = `${user?.dob}`;
+      reset({ ...defaultValues });
+    }
+  }, [check]);
+
+  const handlePreviewAvatar = (e) => {
+    const file = e.target.files[0];
+    file.preview = URL.createObjectURL(file);
+
+    setAvatarPreview(file);
+  };
+
+  const handleUpload = (e) => {
+    e.preventDefault();
+    handleStatus(true);
+    uploaded([{ file: avatarPreview, label: "avatar" }]);
+  };
+
+  const uploaded = (items) => {
+    items.forEach((item) => {
+      const imgRef = ref(storage, `/items/${item.file.name}`);
+      const uploadTask = uploadBytesResumable(imgRef, item.file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setLoad(progress);
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            setChangeAvatar((prev) => {
+              return { ...prev, [item.label]: url };
+            });
+            setCheck(1);
+          });
+        }
+      );
+    });
+  };
+
+  const handleEdit = async (e) => {
+    const userInfo = {
+      name: e.name,
+      email: e.email,
+      gender: e.gender,
+      phone: e.phone,
+      dob: e.dob,
+      address: e.address,
+    };
+    const infoUserUpdate = Object.assign(userInfo, changeAvatar);
+    // setChangeAvatar({ ...changeAvatar, userInfo });
+    // console.log(userInfo);
+    await updateInfoUser(infoUserUpdate, currentUser?.accessToken, navigate);
+  };
+  console.log("avara", changeAvatar);
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: `${user?.name}`,
+      email: `${user?.email}`,
+      gender: `${user?.gender}`,
+      phone: `${user?.phone}`,
+      address: `${user?.address}`,
+      dob: `${user?.dob}`,
+    },
+  });
   return (
     <div>
       <div className="md:grid md:grid-cols-3 md:gap-6">
         <div className="md:col-span-1">
           <div className="mx-10 my-5 sm:px-0">
-            <img
-              className="w-[30rem] h-[30rem] mx-auto object-cover rounded-full items-center"
-              src={
-                user?.avatar ||
-                "https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-dark-gray-simple-avatar-png-image_3418404.jpg"
-              }
-              alt="Rounded avatar"
-            />
+            {avatarPreview ? (
+              <img
+                className="w-[30rem] h-[30rem] mx-auto object-cover rounded-full items-center"
+                src={avatarPreview.preview}
+                alt=""
+                width="80%"
+              />
+            ) : (
+              <img
+                className="w-[30rem] h-[30rem] mx-auto object-cover rounded-full items-center"
+                src={user?.avatar}
+                alt="Rounded avatar"
+              />
+            )}
             <div className="text-center my-8 font-bold text-2xl">
               {user?.name}
             </div>
@@ -29,11 +156,18 @@ function EditProfile() {
               className="block w-1/2 mx-auto text-lg text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
               id="file_input"
               type="file"
+              onChange={handlePreviewAvatar}
             />
+            <button
+              className="block w-1/2 mx-auto my-5 rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-lg font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              onClick={handleUpload}
+            >
+              Upload file
+            </button>
           </div>
         </div>
         <div className="mt-5 md:col-span-2 flex flex-col justify-center md:mt-0">
-          <form action="#" method="POST">
+          <form onSubmit={handleSubmit(handleEdit)}>
             <div className="overflow-hidden shadow sm:rounded-md">
               <div className="bg-white px-4 py-5 sm:p-6">
                 <div className="grid grid-cols-6 gap-6">
@@ -49,9 +183,12 @@ function EditProfile() {
                       name="first-name"
                       id="first-name"
                       autocomplete="off"
-                      defaultValue={user?.name}
                       className="mt-1 block w-full outline-0 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg"
+                      {...register("name")}
                     />
+                    {errors.name && (
+                      <p className="error">{errors.name?.message}</p>
+                    )}
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
@@ -62,12 +199,12 @@ function EditProfile() {
                       Ngày sinh
                     </label>
                     <input
-                      type="text"
+                      type="date"
                       name="last-name"
                       id="last-name"
                       autocomplete="off"
-                      defaultValue={user?.dob}
                       className="mt-1 block w-full outline-0 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg"
+                      {...register("dob")}
                     />
                   </div>
 
@@ -83,8 +220,8 @@ function EditProfile() {
                       name="email-address"
                       id="email-address"
                       autocomplete="off"
-                      defaultValue={user?.gender}
                       className="mt-1 block w-full outline-0 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg"
+                      {...register("gender")}
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
@@ -99,8 +236,8 @@ function EditProfile() {
                       name="email-address"
                       id="email-address"
                       autocomplete="off"
-                      defaultValue={user?.email}
                       className="mt-1 block w-full outline-0 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg"
+                      {...register("email")}
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
@@ -115,8 +252,8 @@ function EditProfile() {
                       name="email-address"
                       id="email-address"
                       autocomplete="off"
-                      defaultValue={user?.phone}
                       className="mt-1 block w-full outline-0 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg"
+                      {...register("phone")}
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
@@ -127,13 +264,12 @@ function EditProfile() {
                       Địa chỉ
                     </label>
                     <input
-                      disabled
                       type="text"
                       name="email-address"
-                      defaultValue={user?.address}
                       id="email-address"
                       autocomplete="off"
                       className="mt-1 block w-full outline-0 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg"
+                      {...register("address")}
                     />
                   </div>
                 </div>
@@ -150,6 +286,14 @@ function EditProfile() {
           </form>
         </div>
       </div>
+      {status.isLoading && (
+        <Status
+          load={load}
+          check={check}
+          checked={1}
+          onStatus={() => setStatus(false)}
+        />
+      )}
     </div>
   );
 }

@@ -1,8 +1,16 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import { useState } from "react";
+import { useEffect } from "react";
+import { getUserById } from "../../services/user";
 export default function Profile() {
-  const user = useSelector((state) => state.auth.currentUser);
+  const currentUser = useSelector((s) => s.auth.currentUser);
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    getUserById(setUser, currentUser?._id);
+  }, []);
 
   return (
     <>

@@ -24,7 +24,6 @@ function Login() {
   const {
     register,
     handleSubmit,
-
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const [errorMessage, setErrorMessage] = useState("");

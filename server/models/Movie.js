@@ -12,7 +12,6 @@ const movieSchema = new mongoose.Schema(
     },
     content: {
       type: String,
-      required: true,
     },
     thumb_url: {
       type: String,

@@ -30,6 +30,7 @@ export const updateUser = async (user, token, id, navigate) => {
     },
   });
   navigate("/admin/user");
+  alert("Chỉnh sửa thông tin thành công ");
 };
 export const deleteUser = async (id, token) => {
   await axios.delete(`/users/${id}`, {
@@ -45,4 +46,13 @@ export const getNewUser = async (setUsers) => {
       setUsers(res.data);
     })
     .catch((err) => console.log(err));
+};
+
+export const updateInfoUser = async (user, token, navigate) => {
+  await axios.patch(`/users/update-info`, user, {
+    headers: {
+      token: `Bearer ${token}`,
+    },
+  });
+  navigate("/profile");
 };

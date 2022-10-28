@@ -17,5 +17,7 @@ router.delete("/:id", verify, userController.deleteUser);
 router.get("/profile/:id", userController.getUserById);
 //get new user
 router.get("/newuser", userController.getNewUser);
+//Update Info By User
+router.patch("/update-info", verify, userController.updateInfoByUser);
 
 module.exports = router;

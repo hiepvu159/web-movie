@@ -22,8 +22,14 @@ export const registerUser = async (
   setErrorMessage
 ) => {
   const res = await dispatch(registerNewUser(user));
-  console.log(res);
   if (res.error) {
     setErrorMessage(res.payload.response.data);
   } else navigate("/login");
+};
+
+export const createUser = async (user, dispatch, navigate, setErrorMessage) => {
+  const res = await dispatch(registerNewUser(user));
+  if (res.error) {
+    setErrorMessage(res.payload.response.data);
+  } else navigate("/admin/user");
 };

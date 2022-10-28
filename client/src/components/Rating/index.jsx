@@ -1,21 +1,15 @@
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { deleteComments } from "../../services/comment";
 import { getUserById } from "../../services/user";
 
-export default function CommentBox({ id, comment, reload }) {
+export default function Rating({ id, rating }) {
   const [user, setUser] = useState([]);
-  const currentUser = useSelector((state) => state.auth.currentUser);
 
   useEffect(() => {
     getUserById(setUser, id);
   }, []);
 
-  const handleDelete = async () => {
-    await deleteComments(comment?._id, currentUser.accessToken);
-  };
   return (
     <>
       <div className="w-2/3 py-3">
@@ -33,16 +27,8 @@ export default function CommentBox({ id, comment, reload }) {
 
           <div className="flex-1 pl-3 py-2">
             <strong>{user?.name}</strong>{" "}
-            {/* <span className="text-xs text-gray-400">3:34 PM</span> */}
-            <p className="text-xs sm:text-sm">{comment?.content}</p>
-            <div className="">
-              {currentUser?._id == comment?.postedBy ||
-              currentUser?.role === "admin" ? (
-                <button onClick={handleDelete} className="text-red-500">
-                  Xóa
-                </button>
-              ) : null}
-            </div>
+            {/* <span class="text-xs text-gray-400">3:34 PM</span> */}
+            <div>Đã đánh giá phim {rating?.rating}/10</div>
           </div>
         </div>
       </div>

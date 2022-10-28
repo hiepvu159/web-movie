@@ -29,9 +29,10 @@ function App() {
   const LoginRoute = ({ children }) => {
     return !currentUser ? children : <ErrorPage />;
   };
-  const ProtectedRoute = ({ children }) => {
-    return !currentUser || !currentUser.isAdmin ? children : <ErrorPage />;
-  };
+  // const  = ({ children }) => {
+  //   return !currentUser ? children : <ErrorPage />;
+  // };
+
   return (
     <div className="App">
       <Routes>
@@ -39,9 +40,9 @@ function App() {
           <Route
             path="/"
             element={
-              <ProtectedRoute>
+              <>
                 <HomeUser />
-              </ProtectedRoute>
+              </>
             }
           />
           <Route
@@ -55,41 +56,41 @@ function App() {
           <Route
             path="/movies/search"
             element={
-              <ProtectedRoute>
+              <>
                 <SearchResult />
-              </ProtectedRoute>
+              </>
             }
           />
           <Route
             path="/movies/filter"
             element={
-              <ProtectedRoute>
+              <>
                 <AllMovie />
-              </ProtectedRoute>
+              </>
             }
           />
           <Route
             path="/movies/:id"
             element={
-              <ProtectedRoute>
+              <>
                 <LandingPage />
-              </ProtectedRoute>
+              </>
             }
           />
           <Route
             path="/profile"
             element={
-              <ProtectedRoute>
+              <>
                 <Profile />
-              </ProtectedRoute>
+              </>
             }
           />
           <Route
-            path="/profile/:id"
+            path="/profile/edit"
             element={
-              <ProtectedRoute>
+              <>
                 <EditProfile />
-              </ProtectedRoute>
+              </>
             }
           />
           <Route
@@ -103,9 +104,9 @@ function App() {
           <Route
             path="/movies/:id/watch"
             element={
-              <ProtectedRoute>
+              <>
                 <MoviePage />
-              </ProtectedRoute>
+              </>
             }
           />
         </Route>

@@ -5,18 +5,33 @@ import { logoutUser } from "../../services/auth";
 import avatar from "../../assets/avatar.jpg";
 import "./Header.css";
 import { useEffect } from "react";
+import { getUserById } from "../../services/user";
+import { useRef } from "react";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState([]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const user = useSelector((state) => state.auth.currentUser);
+  const currentUser = useSelector((state) => state.auth.currentUser);
 
   const handleLogOut = async () => {
     await logoutUser(dispatch, navigate);
   };
+  const ref = useRef();
+
+  // const toggleDropdown = (event) => {
+  //   event.stopPropagation();
+  //   if (event.target !== ref.current)
+  //     setIsOpen(false); //if clicked element (target) not the drop down close it
+  //   else setIsOpen(!isOpen);
+  // };
+
+  useEffect(() => {
+    getUserById(setUser, currentUser?._id);
+  }, [navigate, dispatch]);
   return (
     <div className="navbar">
       <div className="header">
@@ -33,9 +48,14 @@ function Header() {
           <Link to="/movies/search" className="category-item">
             Tìm kiếm
           </Link>
+          {currentUser?.isAdmin && (
+            <Link to="/admin/dashboard" className="category-item">
+              Dashbroad
+            </Link>
+          )}
         </div>
         <div className="header-right">
-          {user ? (
+          {currentUser ? (
             <div className="flex items-center">
               <button onClick={() => setIsOpen(!isOpen)}>
                 <img
@@ -49,7 +69,7 @@ function Header() {
                   <Link to="/profile">
                     <div className="menu-item ">{user.name}</div>
                   </Link>
-                  <Link to="/profile/:id">
+                  <Link to="/profile/edit">
                     <div className="menu-item">Chỉnh sửa thông tin</div>
                   </Link>
                   <Link to="/" onClick={handleLogOut}>

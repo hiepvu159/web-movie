@@ -3,6 +3,7 @@ import { filterMovie, getMovies } from "../../services/movie";
 import Select from "react-select";
 import { Link, useSearchParams } from "react-router-dom";
 import Card from "../../components/Card";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { options } from "../../gener";
 import "./AllMovie.css";
 
@@ -11,9 +12,9 @@ function AllMovie() {
   const [categorySelected, setCategorySelected] = useState("Tất Cả");
   const [searchParams, setSearchParams] = useSearchParams();
   const [movies, setMovies] = useState([]);
-  const searchTerm = searchParams.get("name");
+  const [hasMore, setHasMore] = useState(true);
 
-  const handleChange = () => {};
+  const searchTerm = searchParams.get("name");
 
   useEffect(() => {
     getMovies(setAllMovies);
@@ -22,6 +23,16 @@ function AllMovie() {
   useEffect(() => {
     filterMovie(searchTerm, setMovies);
   }, [searchParams]);
+
+  const handleChange = () => {
+    if (allMovies.length < 20) {
+      setTimeout(() => {
+        setAllMovies(allMovies?.concat(Array.from({ length: 10 })));
+      }, 1500);
+    } else {
+      setHasMore(false);
+    }
+  };
   return (
     <div className="movie-main">
       <div className="filter">
@@ -34,19 +45,35 @@ function AllMovie() {
           className="w-full border border-slate-600 rounded"
           onChange={(e) => setSearchParams({ name: e.value.replace(" ", "-") })}
         />
-      </div>
-      <div className="movie-list">
-        {searchTerm
+        {/* {searchTerm
           ? movies.map((item) => (
-              <Link to={`/movies/${item._id}`} key={item._id}>
-                <Card key={item._id} data={item} />
-              </Link>
+            <Link to={`/movies/${item._id}`} key={item._id}>
+            <Card key={item._id} data={item} />
+            </Link>
             ))
-          : allMovies.map((movie) => (
+            : 
+            allMovies.map((movie) => (
+              <Link to={`/movies/${movie._id}`} key={movie._id}>
+              <Card data={movie} />
+              </Link>
+              )
+            )} */}
+      </div>
+      <div className="w-full">
+        <InfiniteScroll
+          dataLength={allMovies?.length}
+          loader={<h4>Loading...</h4>}
+          next={handleChange}
+          hasMore={hasMore}
+        >
+          <div className="movie-list">
+            {allMovies.map((movie) => (
               <Link to={`/movies/${movie._id}`} key={movie._id}>
                 <Card data={movie} />
               </Link>
             ))}
+          </div>
+        </InfiniteScroll>
       </div>
     </div>
   );

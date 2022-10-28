@@ -20,8 +20,7 @@ InfoMovie.defaultProps = {
   year: null,
 };
 
-function InfoMovie(props) {
-  const { data } = props;
+function InfoMovie({ data, check }) {
   return (
     <div className="background-info">
       <img src={data.thumb_url} alt="placeholder" className="thumbnail" />
@@ -43,9 +42,11 @@ function InfoMovie(props) {
             <section className="content-text">Danh mục: {data.type}</section>
             <section className="content-text">Năm:{data.year}</section>
           </div>
-          <Link to={`/movies/${data._id}/watch`} className="btn-play">
-            Xem phim
-          </Link>
+          {check && (
+            <Link to={`/movies/${data._id}/watch`} className="btn-play">
+              Xem phim
+            </Link>
+          )}
         </div>
       </div>
     </div>

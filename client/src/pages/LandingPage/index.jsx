@@ -15,16 +15,19 @@ function LandingPage() {
   return (
     <>
       <div className="main">
-        <InfoMovie data={movie} />
+        <InfoMovie data={movie} check={true} />
       </div>
       <div className="content-des">
         <section className="content-des-title">Nội dung phim</section>
-        <div className="content-des-summary">{movie.content}</div>
+        <p className="content-des-summary">{`${movie.content}`}</p>
         <div className="content-des-title">Trailer</div>
         <div className="trailer">
           <ReactPlayer
             className="trailer"
-            url={movie.trailer_url}
+            url={
+              movie.trailer_url ||
+              "https://www.youtube.com/watch?v=e1ZSLVTZ47M&ab_channel=CGVCinemasVietnam"
+            }
             controls={true}
           />
         </div>

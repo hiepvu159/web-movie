@@ -29,17 +29,60 @@ export default function CreateMovie() {
   // });
 
   const {
+    reset,
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm({});
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    setSrc(e.target.value);
+  const handleGetItem = () => {
+    getInfo(src, setMovie, setEpisodes);
+    // if (movie?.length !== 0) {
+    //   let defaultValues = {};
+    //   defaultValues.name = `${movie?.name}`;
+    //   defaultValues.origin_name = `${movie?.origin_name}`;
+    //   defaultValues.thumb_url = `${movie?.thumb_url}`;
+    //   defaultValues.poster_url = `${movie?.poster_url}`;
+    //   defaultValues.trailer_url = `${movie?.trailer_url}`;
+    //   defaultValues.type = `${movie?.type}`;
+    //   defaultValues.director = `${movie?.director}`;
+    //   defaultValues.status = `${movie?.status}`;
+    //   defaultValues.type = `${movie?.type}`;
+    //   defaultValues.country = `${movie?.country}`;
+    //   defaultValues.actor = `${movie?.actor}`;
+    //   defaultValues.year = `${movie?.year}`;
+    //   defaultValues.category = `${movie?.category?.map((item) => item.name)}`;
+    //   defaultValues.episodes = `${movie?.episodes?.map((i) => i)}`;
+    //   reset({ ...defaultValues });
+    // }
   };
-
+  useEffect(() => {
+    if (movie?.length !== 0) {
+      let defaultValues = {};
+      defaultValues.name = `${movie?.name}`;
+      defaultValues.origin_name = `${movie?.origin_name}`;
+      defaultValues.thumb_url = `${movie?.poster_url}`;
+      defaultValues.poster_url = `${movie?.thumb_url}`;
+      defaultValues.trailer_url = `${movie?.trailer_url}`;
+      defaultValues.type = `${movie?.type}`;
+      defaultValues.director = `${movie?.director}`;
+      defaultValues.status = `${movie?.status}`;
+      defaultValues.type = `${movie?.type}`;
+      defaultValues.country = `${movie?.country?.map((item) => item?.name)}`;
+      defaultValues.actor = `${movie?.actor}`;
+      defaultValues.year = `${movie?.year}`;
+      defaultValues.category = `${movie?.category?.map((item) => item.name)}`;
+      defaultValues.episodes = `${ep}`;
+      reset({ ...defaultValues });
+    } else {
+      return;
+    }
+  }, [movie]);
+  const ep = episodes?.episodes?.map((i) =>
+    i.server_data?.map((a) => a.link_m3u8)
+  );
+  console.log(ep?.toString());
   const onSubmit = async (e) => {
     const newMovie = {
       name: e.name,
@@ -51,15 +94,13 @@ export default function CreateMovie() {
       type: e.type,
       director: e.director,
       status: e.status,
-      episode_current: e.episode_current,
-      episode_total: e.episode_total,
       country: e.country,
       actor: e.actor,
       year: e.year,
       category: e.category,
-      episodes: episodes.episodes[0].server_data,
+      episodes: ep?.toString(),
     };
-
+    console.log(newMovie);
     // console.log(episodes.episodes[0].server_data);
     await addMovies(newMovie, token, navigate);
   };
@@ -73,7 +114,7 @@ export default function CreateMovie() {
         >
           Nguồn phim
         </label>
-        <div className="flex">
+        <div className="flex mb-6">
           <input
             type="text"
             id="first_name"
@@ -81,11 +122,11 @@ export default function CreateMovie() {
             placeholder="Điền nguồn vào đây..."
             required=""
             autoComplete="off"
-            onChange={handleChange}
+            onChange={(e) => setSrc(e.target.value)}
           />
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-lg"
-            onClick={() => getInfo(src, setMovie, setEpisodes)}
+            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-r-lg"
+            onClick={handleGetItem}
           >
             Nhập
           </button>
@@ -105,8 +146,6 @@ export default function CreateMovie() {
                 type="text"
                 id="name"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                value={movie.name}
                 onChange={(e) => setName(e.currentTarget.value)}
                 {...register("name")}
               />
@@ -122,8 +161,6 @@ export default function CreateMovie() {
                 type="text"
                 id="origin_name"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={movie.origin_name}
                 {...register("origin_name")}
               />
             </div>
@@ -138,8 +175,6 @@ export default function CreateMovie() {
                 type="text"
                 id="poster"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={movie.poster_url}
                 {...register("thumb_url")}
               />
             </div>
@@ -154,8 +189,6 @@ export default function CreateMovie() {
                 type="text"
                 id="thumb"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={movie.thumb_url}
                 {...register("poster_url")}
               />
             </div>
@@ -170,8 +203,6 @@ export default function CreateMovie() {
                 type="text"
                 id="trailer"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={movie.trailer_url}
                 {...register("trailer_url")}
               />
             </div>
@@ -186,8 +217,6 @@ export default function CreateMovie() {
                 type="text"
                 id="type"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={movie.type}
                 {...register("type")}
               />
             </div>
@@ -202,8 +231,6 @@ export default function CreateMovie() {
                 type="text"
                 id="category"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={movie?.category?.map((i) => i.name)}
                 {...register("category")}
               />
             </div>
@@ -218,8 +245,6 @@ export default function CreateMovie() {
                 type="text"
                 id="year"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={movie.year}
                 {...register("year")}
               />
             </div>
@@ -234,8 +259,6 @@ export default function CreateMovie() {
                 type="text"
                 id="country"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={movie?.country?.map((i) => i.name)}
                 {...register("country")}
               />
             </div>
@@ -250,8 +273,6 @@ export default function CreateMovie() {
                 type="text"
                 id="director"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={movie?.director?.join(", ")}
                 {...register("director")}
               />
             </div>
@@ -266,43 +287,10 @@ export default function CreateMovie() {
                 type="text"
                 id="actor"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={movie?.actor?.join(", ")}
                 {...register("actor")}
               />
             </div>
-            <div>
-              <label
-                for="episode_current"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >
-                Số tập hiện tại
-              </label>
-              <input
-                type="text"
-                id="episode_current"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={movie.episode_current}
-                {...register("episode_current")}
-              />
-            </div>
-            <div>
-              <label
-                for="episode_total"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >
-                Tổng số tập
-              </label>
-              <input
-                type="text"
-                id="episode_total"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={movie.episode_total}
-                {...register("episode_total")}
-              />
-            </div>
+
             <div>
               <label
                 for="status"
@@ -314,8 +302,6 @@ export default function CreateMovie() {
                 type="text"
                 id="status"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={movie.status}
                 {...register("status")}
               />
             </div>
@@ -330,8 +316,6 @@ export default function CreateMovie() {
                 type="text"
                 id="content"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg resize-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={movie.content}
                 autoComplete="off"
                 {...register("content")}
               />
@@ -339,26 +323,26 @@ export default function CreateMovie() {
             <div>
               <label
                 for="episodes"
-                className="block  invisible  mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="block   mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
-                Tập
+                Link phim
               </label>
               <input
                 type="text"
                 id="episodes"
-                className="bg-gray-50 border invisible  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required=""
-                defaultValue={episodes}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 {...register("episodes")}
               />
             </div>
           </div>
-          <button
-            type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Submit
-          </button>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Tạo mới
+            </button>
+          </div>
         </form>
       </div>
     </div>

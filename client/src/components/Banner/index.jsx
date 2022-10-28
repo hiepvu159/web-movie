@@ -13,7 +13,7 @@ function Banner() {
   useEffect(() => {
     getMovies(setMovies);
   }, []);
-  console.log(movies);
+
   return (
     <div className="banner">
       <Swiper
@@ -32,9 +32,18 @@ function Banner() {
               <div className="swiper-info">
                 <div className="swiper-name">{movie.name}</div>
                 <div className="flex">
-                  {movie.category.map((ctg) => (
-                    <div className="swiper-category">{ctg}</div>
-                  ))}
+                  {movie?.category?.map((ctg) => {
+                    return (
+                      <>
+                        {ctg
+                          ?.split(",")
+                          .concat()
+                          .map((item) => (
+                            <div className="swiper-category">{item}</div>
+                          ))}
+                      </>
+                    );
+                  })}
                 </div>
               </div>
             </div>

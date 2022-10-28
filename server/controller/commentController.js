@@ -26,7 +26,7 @@ const commentController = {
     }
   },
   deleteComment: async (req, res) => {
-    if (req.user) {
+    if (req.user || req.user.isAdmin === "true" || req.user.role === "admin") {
       try {
         await Comment.findByIdAndDelete(req.params.id);
         res.status(201).json("The comment has been delete...");
@@ -36,14 +36,6 @@ const commentController = {
     } else {
       res.status(403).json("You are not allowed!");
     }
-  },
-  getUserComment: async (req, res) => {
-    Comment.findById({ movieId: req.body.movieId })
-      .populate("User")
-      .exec((err, commenes) => {
-        if (err) return res.status(400).send(err);
-        res.status(200).json({ success: true, commments });
-      });
   },
 };
 

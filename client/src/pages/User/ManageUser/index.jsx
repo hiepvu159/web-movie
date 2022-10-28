@@ -78,15 +78,15 @@ function ManageUser() {
     {
       field: "Action",
       width: 150,
-      renderCell: (movie) => {
+      renderCell: (user) => {
         return (
           <div className="items-center text-center">
-            <Link to={`/admin/movie/edit/${movie.id}`}>
+            <Link to={`/admin/user/edit/${user.id}`}>
               <button>
                 <AiFillEdit className="icon-edit" />
               </button>
             </Link>
-            <button onClick={() => handleDelete(movie.id)}>
+            <button onClick={() => handleDelete(user.id)}>
               <AiFillDelete className="icon-delete" />
             </button>
           </div>

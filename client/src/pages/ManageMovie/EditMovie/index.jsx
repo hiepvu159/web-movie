@@ -14,88 +14,48 @@ export default function EditMovie() {
   const token = useSelector((state) => state.auth.currentUser.accessToken);
   const navigate = useNavigate();
   const [movieInfo, setMovieInfo] = useState({});
-  const [movie, setMovie] = useState({});
-  const [categorySelected, setCategorySelected] = useState([]);
-  const [thumb, setThumb] = useState("");
-  const [poster, setPoster] = useState("");
-  const [trailer, setTrailer] = useState("");
-  const [link, setLink] = useState("");
-  const [load, setLoad] = useState(null);
-  const [check, setCheck] = useState(0);
-  const [status, setStatus] = useState({
-    isLoading: false,
-  });
-  // const []
-  const [name, setName] = useState("");
+  const [check, setCheck] = useState(false);
   const param = useParams();
   const { id } = param;
 
   useEffect(() => {
-    getMovieById(id, setMovieInfo);
-  }, [id]);
+    if (check) {
+      let defaultValues = {};
+      defaultValues.name = `${movieInfo?.name}`;
+      defaultValues.origin_name = `${movieInfo?.origin_name}`;
+      defaultValues.thumb_url = `${movieInfo?.poster_url}`;
+      defaultValues.poster_url = `${movieInfo?.thumb_url}`;
+      defaultValues.trailer_url = `${movieInfo?.trailer_url}`;
+      defaultValues.type = `${movieInfo?.type}`;
+      defaultValues.director = `${movieInfo?.director}`;
+      defaultValues.status = `${movieInfo?.status}`;
+      defaultValues.type = `${movieInfo?.type}`;
+      defaultValues.country = `${movieInfo?.country}`;
+      defaultValues.actor = `${movieInfo?.actor}`;
+      defaultValues.year = `${movieInfo?.year}`;
+      defaultValues.category = `${movieInfo?.category}`;
+      defaultValues.content = `${movieInfo?.content}`;
+      reset({ ...defaultValues });
+    }
+    // return;
+  }, [check]);
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setMovie({
-      ...movie,
-      [e.target.name]: value,
-    });
-  };
-  const handleStatus = (isLoading) => {
-    setStatus({
-      isLoading,
-    });
-  };
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   await updateMovie(movie, token, id, navigate);
-  // };
-
-  const handleUpload = (e) => {
-    e.preventDefault();
-    handleStatus(true);
-    setMovie({ ...movie, category: categorySelected });
-    uploaded([
-      { file: poster, label: "poster_url" },
-      { file: trailer, label: "trailer_url" },
-      { file: thumb, label: "thumb_url" },
-      { file: link, label: "link" },
-    ]);
+  const callApi = async () => {
+    await getMovieById(id, setMovieInfo);
+    setCheck(!check);
   };
 
-  const uploaded = (items) => {
-    items.forEach((item) => {
-      const imgRef = ref(storage, `/items/${item.file.name}`);
-      const uploadTask = uploadBytesResumable(imgRef, item.file);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  useEffect(() => {
+    callApi();
+  }, []);
 
-          setLoad(progress);
-        },
-        (error) => {
-          console.log(error);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            setMovie((prev) => {
-              return { ...prev, [item.label]: url };
-            });
-            setCheck((prev) => prev + 1);
-          });
-        }
-      );
-    });
-  };
-  const onSubmit = async (e) => {
+  const handleChangeInfo = async (e) => {
     const update = {
       name: e.name,
       origin_name: e.origin_name,
       content: e.content,
-      thumb_url: e.thumb_url,
-      poster_url: e.poster_url,
+      thumb_url: e.poster_url,
+      poster_url: e.thumb_url,
       trailer_url: e.trailer_url,
       type: e.type,
       director: e.director,
@@ -110,21 +70,26 @@ export default function EditMovie() {
     };
     console.log(update);
     // console.log(episodes.episodes[0].server_data);
-    // await updateMovie(update, token, id, navigate);
+    await updateMovie(update, token, id, navigate);
   };
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
-  } = useForm({});
-
+    reset,
+    formState: {},
+  } = useForm({
+    defaultValues: {
+      name: `${movieInfo?.name}`,
+      origin_name: `${movieInfo?.origin_name}`,
+    },
+  });
   return (
     <div className="w-full px-10">
       <div className="font-bold text-3xl py-5 pl-1 p">Chỉnh sửa thông tin</div>
 
       <div>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(handleChangeInfo)}>
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label
@@ -138,8 +103,6 @@ export default function EditMovie() {
                 id="name"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required=""
-                defaultValue={movieInfo.name}
-                onChange={(e) => setName(e.currentTarget.value)}
                 {...register("name")}
               />
             </div>
@@ -155,7 +118,6 @@ export default function EditMovie() {
                 id="origin_name"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required=""
-                defaultValue={movieInfo.origin_name}
                 {...register("origin_name")}
               />
             </div>
@@ -171,7 +133,6 @@ export default function EditMovie() {
                 id="poster"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required=""
-                defaultValue={movieInfo.poster_url}
                 {...register("thumb_url")}
               />
             </div>
@@ -187,7 +148,6 @@ export default function EditMovie() {
                 id="thumb"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required=""
-                defaultValue={movieInfo.thumb_url}
                 {...register("poster_url")}
               />
             </div>
@@ -203,7 +163,6 @@ export default function EditMovie() {
                 id="trailer"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required=""
-                defaultValue={movieInfo.trailer_url}
                 {...register("trailer_url")}
               />
             </div>
@@ -219,7 +178,6 @@ export default function EditMovie() {
                 id="type"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required=""
-                defaultValue={movieInfo.type}
                 {...register("type")}
               />
             </div>
@@ -235,7 +193,6 @@ export default function EditMovie() {
                 id="category"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required=""
-                defaultValue={movieInfo?.category}
                 {...register("category")}
               />
             </div>
@@ -251,7 +208,6 @@ export default function EditMovie() {
                 id="year"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required=""
-                defaultValue={movieInfo.year}
                 {...register("year")}
               />
             </div>
@@ -267,7 +223,6 @@ export default function EditMovie() {
                 id="country"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required=""
-                defaultValue={movieInfo?.country}
                 {...register("country")}
               />
             </div>
@@ -283,7 +238,6 @@ export default function EditMovie() {
                 id="director"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required=""
-                defaultValue={movieInfo?.director?.join(", ")}
                 {...register("director")}
               />
             </div>
@@ -299,7 +253,6 @@ export default function EditMovie() {
                 id="actor"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required=""
-                defaultValue={movieInfo?.actor?.join(", ")}
                 {...register("actor")}
               />
             </div>
@@ -316,7 +269,6 @@ export default function EditMovie() {
                 id="status"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required=""
-                defaultValue={movieInfo.status}
                 {...register("status")}
               />
             </div>
@@ -332,7 +284,6 @@ export default function EditMovie() {
                 id="content"
                 className="h-24 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg resize-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required=""
-                defaultValue={movieInfo.content}
                 autoComplete="off"
                 {...register("content")}
               />
