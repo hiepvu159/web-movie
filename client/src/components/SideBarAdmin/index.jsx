@@ -3,6 +3,7 @@ import {
   HiOutlineUserGroup,
   HiOutlineFilm,
   HiOutlineClipboardList,
+  HiOutlineChevronLeft,
 } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -45,16 +46,12 @@ function SideBarAdmin() {
               </Link>
             </div>
           </div>
-          {/* <div className="flex justify-center mb-5">
-            {user ? (
-              <div className="mb-1 text-white text-xl">{user.name}</div>
-            ) : (
-              <div className="mb-1 text-white text-xl"></div>
-            )}
-            <Link to="/login" onClick={handleLogOut}>
-              <IoLogOutOutline className="admin-logout" />
-            </Link>
-          </div> */}
+          <Link to="/">
+            <div className="admin-category">
+              <HiOutlineChevronLeft className="admin-category-icon" />
+              <span className="">Quay lại trang chủ</span>
+            </div>
+          </Link>
         </nav>
       ) : (
         <></>

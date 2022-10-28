@@ -105,7 +105,7 @@ function EditProfile() {
     };
     const infoUserUpdate = Object.assign(userInfo, changeAvatar);
     // setChangeAvatar({ ...changeAvatar, userInfo });
-    // console.log(userInfo);
+    console.log(userInfo);
     await updateInfoUser(infoUserUpdate, currentUser?.accessToken, navigate);
   };
   console.log("avara", changeAvatar);
@@ -215,14 +215,46 @@ function EditProfile() {
                     >
                       Giới tính
                     </label>
-                    <input
-                      type="text"
-                      name="email-address"
-                      id="email-address"
-                      autocomplete="off"
-                      className="mt-1 block w-full outline-0 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-lg"
-                      {...register("gender")}
-                    />
+                    <div className="flex justify-start my-auto">
+                      <div className=" mr-5">
+                        <input
+                          id="default-radio-1"
+                          type="radio"
+                          value="Nam"
+                          name="default-radio"
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          {...register("gender")}
+                        />
+                        {errors.gender && (
+                          <p className="error">{errors.gender?.message}</p>
+                        )}
+                        <label
+                          for="default-radio-1"
+                          className="ml-2 text-lg font-medium text-gray-900 dark:text-gray-300"
+                        >
+                          Nam
+                        </label>
+                      </div>
+                      <div className="">
+                        <input
+                          id="default-radio-2"
+                          type="radio"
+                          value="Nữ"
+                          name="default-radio"
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          {...register("gender")}
+                        />
+                        {errors.gender && (
+                          <p className="error">{errors.gender?.message}</p>
+                        )}
+                        <label
+                          for="default-radio-2"
+                          className="ml-2 text-lg font-medium text-gray-900 dark:text-gray-300"
+                        >
+                          Nữ
+                        </label>
+                      </div>
+                    </div>
                   </div>
                   <div className="col-span-6 sm:col-span-3">
                     <label

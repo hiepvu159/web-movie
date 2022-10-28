@@ -3,7 +3,6 @@ import { filterMovie, getMovies } from "../../services/movie";
 import Select from "react-select";
 import { Link, useSearchParams } from "react-router-dom";
 import Card from "../../components/Card";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { options } from "../../gener";
 import "./AllMovie.css";
 
