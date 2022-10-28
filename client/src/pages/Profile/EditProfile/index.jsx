@@ -131,14 +131,14 @@ function EditProfile() {
           <div className="mx-10 my-5 sm:px-0">
             {avatarPreview ? (
               <img
-                className="w-[30rem] h-[30rem] mx-auto object-cover rounded-full items-center"
+                className="w-[16rem] mx-auto object-cover items-center"
                 src={avatarPreview.preview}
                 alt=""
                 width="80%"
               />
             ) : (
               <img
-                className="w-[30rem] h-[30rem] mx-auto object-cover rounded-full items-center"
+                className="w-[16rem] mx-auto object-cover items-center"
                 src={user?.avatar}
                 alt="Rounded avatar"
               />

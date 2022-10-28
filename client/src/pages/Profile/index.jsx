@@ -19,7 +19,7 @@ export default function Profile() {
           <div className="w-full md:w-3/12 md:mx-2">
             <div className="image overflow-hidden">
               <img
-                className="h-auto w-full mx-auto"
+                className="w-[16rem] mx-auto object-cover"
                 src={
                   user?.avatar ||
                   "https://png.pngtree.com/png-clipart/20210608/ourlarge/pngtree-dark-gray-simple-avatar-png-image_3418404.jpg"

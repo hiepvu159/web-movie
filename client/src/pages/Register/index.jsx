@@ -57,8 +57,8 @@ function Register(props) {
   };
   return (
     <div className="mt-auto w-full">
-      <div className="flex justify-start mx-24">
-        <img src={login} className="h-auto" alt="photo" />
+      <div className="flex justify-start my-10">
+        <img src={login} className="w-[32rem] object-cover" alt="sign-up" />
         <div className="min-w-[40rem] my-auto xl:w-[50rem] md:w-[30rem] ">
           <p className="register-title">Đăng ký</p>
           <form onSubmit={handleSubmit(onRegisterSubmit)}>

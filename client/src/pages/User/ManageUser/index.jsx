@@ -112,7 +112,7 @@ function ManageUser() {
     <div className="w-full px-6 py-5">
       <div className="manage-movie-main">
         <div className="main-title">
-          <span className="action-name">Quản lý</span>
+          <span className="action-name">Quản lý người dùng</span>
           <Link to="/admin/user/create">
             <button className="btn-create">Tạo mới</button>
           </Link>

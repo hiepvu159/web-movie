@@ -101,7 +101,7 @@ function Manage() {
     <div className="w-full px-6 py-5">
       <div className="manage-movie-main">
         <div className="main-title">
-          <span className="action-name">Quản lý</span>
+          <span className="action-name">Quản lý phim</span>
           <Link to="/admin/movie/create">
             <button className="btn-create">Tạo mới</button>
           </Link>
