@@ -9,6 +9,8 @@ import { option } from "../../../gener";
 import Status from "../../../components/Status";
 import "./EditMovie.css";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 export default function EditMovie() {
   const token = useSelector((state) => state.auth.currentUser.accessToken);
@@ -72,17 +74,26 @@ export default function EditMovie() {
     // console.log(episodes.episodes[0].server_data);
     await updateMovie(update, token, id, navigate);
   };
+
+  const schema = yup.object().shape({
+    name: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    origin_name: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    content: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    poster_url: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    thumb_url: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    type: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    status: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+    category: yup.string().required("Vui lòng nhập đầy đủ thông tin"),
+  });
+
   const {
     register,
     handleSubmit,
     watch,
     reset,
-    formState: {},
+    formState: { errors },
   } = useForm({
-    defaultValues: {
-      name: `${movieInfo?.name}`,
-      origin_name: `${movieInfo?.origin_name}`,
-    },
+    resolver: yupResolver(schema),
   });
   return (
     <div className="w-full px-10">
@@ -105,6 +116,7 @@ export default function EditMovie() {
                 required=""
                 {...register("name")}
               />
+              {errors.name && <p className="error">{errors.name?.message}</p>}
             </div>
             <div>
               <label
@@ -120,6 +132,9 @@ export default function EditMovie() {
                 required=""
                 {...register("origin_name")}
               />
+              {errors.origin_name && (
+                <p className="error">{errors.origin_name?.message}</p>
+              )}
             </div>
             <div>
               <label
@@ -293,7 +308,7 @@ export default function EditMovie() {
             type="submit"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
-            Submit
+            Lưu
           </button>
         </form>
       </div>

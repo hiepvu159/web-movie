@@ -45,35 +45,19 @@ function AllMovie() {
           className="w-full border border-slate-600 rounded"
           onChange={(e) => setSearchParams({ name: e.value.replace(" ", "-") })}
         />
-        {/* {searchTerm
-          ? movies.map((item) => (
-            <Link to={`/movies/${item._id}`} key={item._id}>
-            <Card key={item._id} data={item} />
-            </Link>
-            ))
-            : 
-            allMovies.map((movie) => (
-              <Link to={`/movies/${movie._id}`} key={movie._id}>
-              <Card data={movie} />
-              </Link>
-              )
-            )} */}
       </div>
-      <div className="w-full">
-        <InfiniteScroll
-          dataLength={allMovies?.length}
-          loader={<h4>Loading...</h4>}
-          next={handleChange}
-          hasMore={hasMore}
-        >
-          <div className="movie-list">
-            {allMovies.map((movie) => (
+      <div className="movie-list">
+        {searchTerm
+          ? movies.map((item) => (
+              <Link to={`/movies/${item._id}`} key={item._id}>
+                <Card key={item._id} data={item} />
+              </Link>
+            ))
+          : allMovies.map((movie) => (
               <Link to={`/movies/${movie._id}`} key={movie._id}>
                 <Card data={movie} />
               </Link>
             ))}
-          </div>
-        </InfiniteScroll>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import CommentBox from "../../components/CommentBox";
 import InfoMovie from "../../components/InfoMovie";
 import Rating from "../../components/Rating";
-import { addComments } from "../../services/comment";
+import { addComments, deleteComments } from "../../services/comment";
 import { getMovieById } from "../../services/movie";
 import { addRating } from "../../services/rating";
 import { getUserById } from "../../services/user";
@@ -18,7 +18,7 @@ function MoviePage() {
   const [user, setUser] = useState([]);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const [load, setLoad] = useState(false);
   const [reload, setReload] = useState(false);
   const [movie, setMovie] = useState([]);
@@ -26,7 +26,7 @@ function MoviePage() {
 
   useEffect(() => {
     getMovieById(id, setMovie);
-  }, [load, reload]);
+  }, [load, reload, loading]);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -47,6 +47,10 @@ function MoviePage() {
     setLoad(!load);
     setRating("");
   };
+  useEffect(() => {
+    getUserById(setUser, id);
+  }, []);
+
   return (
     <>
       <InfoMovie data={movie} check={false} />
@@ -78,6 +82,7 @@ function MoviePage() {
                       name="rating"
                       className="w-1/4 ml-3 pl-3 border border-slate-400 rounded focus:outline-none focus:ring-gray-300 focus:ring-1"
                       onChange={(e) => setRating(e.target.value)}
+                      placeholder="Nhập đánh giá"
                     />
                     <button
                       className="px-3 py-2 text-sm text-blue-100 bg-blue-600 rounded"
@@ -141,11 +146,25 @@ function MoviePage() {
                   )}
                 </div>
                 {movie?.comments?.map((item) => (
-                  <CommentBox
-                    id={item?.postedBy}
-                    reload={setReload}
-                    comment={item}
-                  />
+                  <div key={movie?._id}>
+                    <CommentBox
+                      id={item?.postedBy}
+                      reload={setReload}
+                      comment={item}
+                    />
+                    {currentUser?._id == item?.postedBy ||
+                    currentUser?.role === "admin" ? (
+                      <button
+                        onClick={() => {
+                          deleteComments(item?._id, currentUser.accessToken);
+                          setLoading(!loading);
+                        }}
+                        className="text-red-500 ml-14"
+                      >
+                        Xóa
+                      </button>
+                    ) : null}
+                  </div>
                 ))}
               </div>
             </div>

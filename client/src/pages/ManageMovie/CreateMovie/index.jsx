@@ -71,6 +71,7 @@ export default function CreateMovie() {
       defaultValues.type = `${movie?.type}`;
       defaultValues.country = `${movie?.country?.map((item) => item?.name)}`;
       defaultValues.actor = `${movie?.actor}`;
+      defaultValues.content = `${movie?.content}`;
       defaultValues.year = `${movie?.year}`;
       defaultValues.category = `${movie?.category?.map((item) => item.name)}`;
       defaultValues.episodes = `${ep}`;
@@ -82,7 +83,7 @@ export default function CreateMovie() {
   const ep = episodes?.episodes?.map((i) =>
     i.server_data?.map((a) => a.link_m3u8)
   );
-  console.log(ep?.toString());
+
   const onSubmit = async (e) => {
     const newMovie = {
       name: e.name,

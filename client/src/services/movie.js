@@ -37,6 +37,7 @@ export const addMovies = async (movie, token, navigate) => {
       token: `Bearer ${token}`,
     },
   });
+  alert("Thêm phim thành công");
   navigate("/admin/movie");
 };
 
@@ -46,6 +47,7 @@ export const updateMovie = async (movie, token, id, navigate) => {
       token: `Bearer ${token}`,
     },
   });
+  alert("Sửa thông tin phim thành công");
   navigate("/admin/movie");
 };
 
@@ -71,4 +73,10 @@ export const getNewMovie = async (setMovies) => {
       setMovies(res.data);
     })
     .catch((err) => console.log(err));
+};
+
+export const getMovieByCategory = async (setMovies, category) => {
+  await axios.get(`/movies/filter/name=${category}`).then((res) => {
+    setMovies(res.data);
+  });
 };

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { deleteComments } from "../../services/comment";
 import { getUserById } from "../../services/user";
 
-export default function CommentBox({ id, comment, reload }) {
+export default function CommentBox({ id, comment }) {
   const [user, setUser] = useState([]);
   const currentUser = useSelector((state) => state.auth.currentUser);
 
@@ -13,9 +13,6 @@ export default function CommentBox({ id, comment, reload }) {
     getUserById(setUser, id);
   }, []);
 
-  const handleDelete = async () => {
-    await deleteComments(comment?._id, currentUser.accessToken);
-  };
   return (
     <>
       <div className="w-2/3 py-3">
@@ -36,12 +33,12 @@ export default function CommentBox({ id, comment, reload }) {
             {/* <span className="text-xs text-gray-400">3:34 PM</span> */}
             <p className="text-xs sm:text-sm">{comment?.content}</p>
             <div className="">
-              {currentUser?._id == comment?.postedBy ||
+              {/* {currentUser?._id == comment?.postedBy ||
               currentUser?.role === "admin" ? (
                 <button onClick={handleDelete} className="text-red-500">
                   Xóa
                 </button>
-              ) : null}
+              ) : null} */}
             </div>
           </div>
         </div>

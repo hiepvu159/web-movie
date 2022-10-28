@@ -17,8 +17,9 @@ function Banner() {
   return (
     <div className="banner">
       <Swiper
-        // install Swiper modules
         modules={[Navigation, Pagination, Scrollbar, A11y]}
+        autoplay
+        speed={500}
         spaceBetween={50}
         slidesPerView={1}
         navigation

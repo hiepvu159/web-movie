@@ -35,6 +35,42 @@ export const options = [
     value: "Bí Ẩn",
     label: "Bí Ẩn",
   },
+  {
+    value: "Chiến tranh",
+    label: "Chiến tranh",
+  },
+  {
+    value: "Cổ Trang",
+    label: "Cổ Trang",
+  },
+  {
+    value: "Hình Sự",
+    label: "Hình Sự",
+  },
+  {
+    value: "Chính kịch",
+    label: "Chính kịch",
+  },
+  {
+    value: "Thể thao",
+    label: "Thể thao",
+  },
+  {
+    value: "Âm nhạc",
+    label: "Âm nhạc",
+  },
+  {
+    value: "Tài Liệu",
+    label: "Tài Liệu",
+  },
+  {
+    value: "Võ Thuật",
+    label: "Võ Thuật",
+  },
+  {
+    value: "Khoa Học",
+    label: "Khoa Học",
+  },
 ];
 
 export const option = [
@@ -55,10 +91,6 @@ export const option = [
     label: "Kinh Dị",
   },
   {
-    value: "Viễn Tưởng",
-    label: "Viễn Tưởng",
-  },
-  {
     value: "Phiêu Lưu",
     label: "Phiêu Lưu",
   },
@@ -73,5 +105,45 @@ export const option = [
   {
     value: "Bí Ẩn",
     label: "Bí Ẩn",
+  },
+  {
+    value: "Viễn Tưởng",
+    label: "Viễn Tưởng",
+  },
+  {
+    value: "Chiến tranh",
+    label: "Chiến tranh",
+  },
+  {
+    value: "Cổ Trang",
+    label: "Cổ Trang",
+  },
+  {
+    value: "Hình Sự",
+    label: "Hình Sự",
+  },
+  {
+    value: "Chính kịch",
+    label: "Chính kịch",
+  },
+  {
+    value: "Thể thao",
+    label: "Thể thao",
+  },
+  {
+    value: "Âm nhạc",
+    label: "Âm nhạc",
+  },
+  {
+    value: "Tài Liệu",
+    label: "Tài Liệu",
+  },
+  {
+    value: "Võ Thuật",
+    label: "Võ Thuật",
+  },
+  {
+    value: "Khoa Học",
+    label: "Khoa Học",
   },
 ];

@@ -28,11 +28,10 @@ const movieController = {
   filterMovieByCategory: async (req, res) => {
     const category = req.params.category.replace("-", " ");
     const resultCategory = await Movie.findOne({ value: category });
-
     try {
       if (resultCategory) {
         const movies = await Movie.find({
-          category: { $eq: category },
+          category: { $regex: category, $options: "i" },
         });
         res.status(200).json(movies.reverse());
       } else {

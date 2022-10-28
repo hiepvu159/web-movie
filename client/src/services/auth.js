@@ -11,7 +11,7 @@ export const loginUser = async (user, dispatch, navigate, setErrorMessage) => {
   if (res.error) {
     setErrorMessage(res.payload.response.data);
   } else if (res.payload.isAdmin) {
-    navigate("/admin/dashboard");
+    navigate("/");
   } else navigate("/");
 };
 
@@ -24,7 +24,10 @@ export const registerUser = async (
   const res = await dispatch(registerNewUser(user));
   if (res.error) {
     setErrorMessage(res.payload.response.data);
-  } else navigate("/login");
+  } else {
+    alert("Đăng ký tài khoản thành công");
+    navigate("/login");
+  }
 };
 
 export const createUser = async (user, dispatch, navigate, setErrorMessage) => {
