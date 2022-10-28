@@ -81,6 +81,12 @@ export default function CreateUser() {
           <div className="flex justify-between">
             <div className="w-1/2 px-2">
               <div className="login-form">
+                <label
+                  for="name"
+                  className="block   mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Tên
+                </label>
                 <input
                   type="text"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -91,6 +97,12 @@ export default function CreateUser() {
                 {errors.name && <p className="error">{errors.name?.message}</p>}
               </div>
               <div className="login-form">
+                <label
+                  for="userame"
+                  className="block   mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Tài khoản người dùng
+                </label>
                 <input
                   type="text"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -105,6 +117,12 @@ export default function CreateUser() {
                 <div className="text-red-600">{errorMessage}</div>
               </div>
               <div className="login-form">
+                <label
+                  for="email"
+                  className="block   mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Email
+                </label>
                 <input
                   type="text"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -117,6 +135,12 @@ export default function CreateUser() {
                 )}
               </div>
               <div className="items-center">
+                <label
+                  for="Gender"
+                  className="block   mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Giới tính
+                </label>
                 <div className="flex justify-start my-auto">
                   <div className=" mr-5">
                     <input
@@ -161,6 +185,12 @@ export default function CreateUser() {
             </div>
             <div className="w-1/2 px-2">
               <div className="login-form">
+                <label
+                  for="address"
+                  className="block   mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Địa chỉ
+                </label>
                 <input
                   type="text"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -173,16 +203,29 @@ export default function CreateUser() {
                 )}
               </div>
               <div className="login-form">
+                <label
+                  for="last-name"
+                  className="block   mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Ngày sinh
+                </label>
                 <input
                   type="date"
+                  name="last-name"
+                  id="last-name"
+                  autocomplete="off"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Ngày sinh"
-                  autoComplete="off"
-                  {...register("date")}
+                  {...register("dob")}
                 />
                 {errors.date && <p className="error">{errors.date?.message}</p>}
               </div>
               <div className="login-form">
+                <label
+                  for="phone"
+                  className="block  mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Số điện thoại
+                </label>
                 <input
                   type="text"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
